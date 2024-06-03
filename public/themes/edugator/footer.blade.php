@@ -116,7 +116,8 @@
 
 <!-- main js -->
 <script src="{{theme_asset('js/main.js')}}"></script>
-
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.css"/>
 
 
 </body>

@@ -1,5 +1,63 @@
 @import url(../../../../assets/css/font-face.css);
 
+/*
+*****************************************
+! BANNER SLIDER ! ----------------------*
+*****************************************
+*/
+
+/*reset*/
+ul.bannerSlider{
+    padding-left:0;
+  }
+  .bannerSlider{
+      height: 450px;
+  }
+  .bannerSlider .slide__image::before{
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 450px;
+      background: rgba(33,33,33,.7);
+  }
+  .bannerSlider .slick-slide {
+      position: relative;
+  }
+  .bannerSlider .slide__image img {
+      width: 100%;
+      height: 450px;
+      object-fit:cover;
+  }
+  img.slide__image__top-position {
+      object-position:center bottom;
+  }
+  .bannerSlider .slide__text {
+      position: absolute;
+      z-index: 100;
+      text-align: center;
+      width: 100%;
+      top: 50%;
+        transform: translateY(-50%);
+  }
+  .bannerSlider .slide__text h2 {
+      font-size: 48px;
+      font-weight: 100;
+  
+      color: #fff;
+  }
+
+  button.btn.btn-primary.mb-2.reg {
+    border-radius: 6px;
+}
+
+input.form-control.reg {
+    border-radius: 6px;
+}
+
+textarea#exampleFormControlTextarea1 {
+    border-radius: 6px;
+}
+
 :root {
     --nav-item-color: #191919;
     --a-color: #216094;

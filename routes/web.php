@@ -236,6 +236,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('my-quiz-attempts', 'QuizController@myQuizAttempts')->name('my_quiz_attempts');
     Route::get('upload_assignment_view', 'DashboardController@uploadAssignmentView')->name('upload_assignment_view');
     Route::post('upload_assignment', 'DashboardController@uploadAssignment')->name('upload_assignment');
+    Route::get('assignment_register_view', 'DashboardController@assignmentRegisterView')->name('assignment_register_view');
+    Route::post('register_assignment', 'DashboardController@registerAssignment')->name('register_assignment');
     
     Route::group(['prefix' => 'purchases'], function () {
         Route::get('/', 'DashboardController@purchaseHistory')->name('purchase_history');

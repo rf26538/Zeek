@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Payment;
 use App\assignment;
+use App\RegisterAssignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -165,6 +166,40 @@ class DashboardController extends Controller
     {
         return view(theme('dashboard.assignment_view'));
     }
+
+    public function assignmentRegisterView(Request $request)
+    {
+        return view(theme('dashboard.assignment_register_view'));
+    }
+    public function registerAssignment(Request $request)
+    {
+        dd($request->all());
+        RegisterAssignment::create([
+            'file_name' => $fileName,
+            'user_id' => $userId,
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = time().'_'.$request->name.'.'.$file->getClientOriginalExtension();
+
+            $directory = public_path('uploads/studentsAssignments');
+            if (!File::isDirectory($directory)) {
+                File::makeDirectory($directory, 0755, true, true);
+            }
+
+            $file->move($directory, $fileName);
+
+            assignment::create([
+                'file_name' => $fileName,
+                'user_id' => $userId,
+            ]);
+
+            return response()->json(['success'=>'File uploaded successfully.']);
+        }
+    }
+
+
     public function uploadAssignment(Request $request)
     {
         if (Auth::check()) {
