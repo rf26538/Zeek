@@ -170,7 +170,57 @@ class DashboardController extends Controller
 
     public function assignmentRegisterView(Request $request)
     {
-        return view(theme('dashboard.assignment_register_view'));
+        $title = __t('dashboard');
+
+        $user = Auth::user();
+
+        $chartData = null;
+
+        if ($user->user_type == 'instructor') {
+            /**
+             * Format Date Name
+             */
+            $start_date = date('Y-m-01');
+            $end_date = date('Y-m-t');
+
+            $begin = new \DateTime($start_date);
+            $end = new \DateTime($end_date.' + 1 day');
+            $interval = \DateInterval::createFromDateString('1 day');
+            $period = new \DatePeriod($begin, $interval, $end);
+
+            $datesPeriod = [];
+            foreach ($period as $dt) {
+                $datesPeriod[$dt->format('Y-m-d')] = 0;
+            }
+
+            /**
+             * Query This Month
+             */
+            $sql = "SELECT SUM(instructor_amount) as total_earning,
+              DATE(created_at) as date_format
+              from earnings
+              WHERE instructor_id = {$user->id} AND payment_status = 'success'
+              AND (created_at BETWEEN '{$start_date}' AND '{$end_date}')
+              GROUP BY date_format
+              ORDER BY created_at ASC ;";
+            $getEarnings = DB::select($sql);
+
+            $total_earning = array_pluck($getEarnings, 'total_earning');
+            $queried_date = array_pluck($getEarnings, 'date_format');
+
+            $dateWiseSales = array_combine($queried_date, $total_earning);
+
+            $chartData = array_merge($datesPeriod, $dateWiseSales);
+            foreach ($chartData as $key => $salesCount) {
+                unset($chartData[$key]);
+                //$formatDate = date('d M', strtotime($key));
+                $formatDate = date('d', strtotime($key));
+                $chartData[$formatDate] = $salesCount;
+            }
+            return view(theme('dashboard.dashboard'), compact('title', 'chartData'));
+        } else if($user->user_type == 'admin' || $user->user_type == 'student') {
+            return view(theme('dashboard.assignment_register_view'));
+        }
     }
     public function assignAssignmentView($id)
     {
@@ -206,6 +256,12 @@ class DashboardController extends Controller
             $fileName = time().'_'.$request->name.'.'.$file->getClientOriginalExtension();
             $file->move($directory, $fileName);
 
+            if(Auth::user()->user_type == 'admin') {
+                $stat = 1;
+            } else {
+                $stat = 0;
+            }
+
             UserAssignment::create([
                 'name' => $request->name,
                 'collage_name'  => $request->colgname,
@@ -214,7 +270,7 @@ class DashboardController extends Controller
                 'description'  => $request->desc,
                 'page_number'  => $request->pagenum,
                 'assignment_files_name'  => $fileName,
-                'is_admin'  => 1
+                'is_admin'  => $stat
             ]);
 
             return redirect()->back()->with('success', __a('settings_saved_msg'));
