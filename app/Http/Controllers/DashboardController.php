@@ -242,6 +242,13 @@ class DashboardController extends Controller
                         ->update(['status' => 1]);
         return response()->json(['success'=>'Payment approved']);
     }
+    public function setAssignmentPayment(Request $request)
+    {
+        UserAssignment::where('id', $request->assignmentId)
+                        ->where('assinged_user_id',$request->instructorId)
+                        ->update(['amount' => $request->price]);
+        return response()->json(['success'=>'Amount set successfully']);
+    }
 
     public function registerAssignment(Request $request)
     {

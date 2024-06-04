@@ -20,6 +20,38 @@ $(function () {
         $('#loginFormModal').modal('show');
     });
 
+    let timer;
+
+    $('#putPrice').keyup(function() {
+        let price = $('#putPrice').val();
+        let instructorId = $('#iId').val();
+        let assignmentId = $('#aId').val();
+
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+            $.ajax({
+                url: pageData.routes.set_assignment_payment,
+                method: 'POST',
+                data: {
+                    price : price,
+                    instructorId : instructorId,
+                    assignmentId : assignmentId
+                },
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: function(response) {
+                    window.location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }, 3000);
+    });
+
     document.getElementById("putPrice").addEventListener("input", function() {
         this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
     });

@@ -241,6 +241,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('assign_assignment_view/{id}', 'DashboardController@assignAssignmentView')->name('assign_assignment_view');
     Route::post('assign_assignment_instructor/{id}', 'DashboardController@assignAssignmentInstructor')->name('assign_assignment_instructor');
     Route::post('approve_payment', 'DashboardController@approvePayment')->name('approve_payment');
+    Route::post('set_assignment_payment', 'DashboardController@setAssignmentPayment')->name('set_assignment_payment');
     
     Route::group(['prefix' => 'purchases'], function () {
         Route::get('/', 'DashboardController@purchaseHistory')->name('purchase_history');

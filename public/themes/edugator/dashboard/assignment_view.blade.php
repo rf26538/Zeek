@@ -13,8 +13,8 @@
     <th>Description</th>
     <th>Status</th>
     @if (Auth::user()->user_type == 'admin')
-      <th>Action</th>
       <th>Amount</th>
+      <th>Action</th>
     @endif
     @if (Auth::user()->user_type == 'instructor')
       <th>Approve</th>
@@ -43,14 +43,16 @@
 
     @if (Auth::user()->user_type == 'admin')
     <td>
+      <input type="hidden" id="aId" value="{{ $assignment['id'] }}">
+      <input type="hidden" id="iId" value="{{ $assignment['assinged_user_id'] }}">
+      <input type="text" id="putPrice" name="putPrice" pattern="\d+(\.\d{1,2})?" value="{{$assignment['amount']}}">
+    </td>
+    <td>
         @if (!$assignment['assinged_user_id'])
           <a href="{{ route('assign_assignment_view', $assignment['id'])}}" class="btn btn-info">{{__t('assign_instructor')}} </a>
         @else
           <a  class="btn btn-success">{{__t('instructor_assigned')}} </a>
         @endif
-    </td>
-    <td>
-    <input type="text" id="putPrice" name="putPrice" pattern="\d+(\.\d{1,2})?" placeholder="Price">
     </td>
     @endif
     @if (Auth::user()->user_type == 'instructor')
