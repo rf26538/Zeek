@@ -52,9 +52,9 @@ $(function () {
         }, 3000);
     });
 
-    document.getElementById("putPrice").addEventListener("input", function() {
-        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
-    });
+    // document.getElementById("putPrice").addEventListener("input", function() {
+    //     this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+    // });
 
 	//banner slider
 	$(".bannerSlider").slick({

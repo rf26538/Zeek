@@ -20,6 +20,7 @@
       <th>Approve</th>
     @endif
     @if (Auth::user()->user_type == 'student')
+      <th>Price</th>
       <th>Download</th>
     @endif
   </tr>
@@ -35,9 +36,9 @@
     <td>{{ $assignment['description'] }}</td>
     <td>
       @if ($assignment['status'] == 0)
-        <span class="badge payment-status-initial badge-secondary"> <i class="la la-clock-o"></i>Progress</span>
+        <span class="badge payment-status-initial badge-secondary"> <i class="la la-clock-o"></i>In-Progress</span>
         @else
-        <span class="badge payment-status-initial badge-secondary"> <i class="la la-clock-o"></i>Success</span>
+        <span class="badge payment-status-success badge-success"> <i class="la la-check-circle"></i>Completed</span>
       @endif
     </td>
 
@@ -67,6 +68,7 @@
     </td>
     @endif
     @if (Auth::user()->user_type == 'student')
+    <td>{{ $assignment['amount'] }}</td>
     <td>
         @if ($assignment['status'] == 0)
           <input type="hidden" id="assignmentId" value="{{ $assignment['id'] }}">
@@ -75,7 +77,7 @@
         @else
           <button type="button" id="downloadAssignment" class="btn btn-info">{{__t('download')}}</button>
         @endif
-    </td>
+      </td>
     @endif
   </tr>
 

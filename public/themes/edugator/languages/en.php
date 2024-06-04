@@ -341,6 +341,6 @@ return [
     'approved' => 'Approved',
     'assign_instructor' => 'Assign Instructor',
     'instructor_assigned' => 'Instructor Assigned',
-    'pay_here' => 'Pay',
+    'pay_here' => 'Pay Here',
     'download' => 'Download',
 ];
