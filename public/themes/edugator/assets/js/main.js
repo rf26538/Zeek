@@ -20,6 +20,10 @@ $(function () {
         $('#loginFormModal').modal('show');
     });
 
+    document.getElementById("putPrice").addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+    });
+
 	//banner slider
 	$(".bannerSlider").slick({
 	    dots: false

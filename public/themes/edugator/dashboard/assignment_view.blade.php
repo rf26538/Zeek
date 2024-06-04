@@ -14,6 +14,7 @@
     <th>Status</th>
     @if (Auth::user()->user_type == 'admin')
       <th>Action</th>
+      <th>Amount</th>
     @endif
     @if (Auth::user()->user_type == 'instructor')
       <th>Approve</th>
@@ -47,6 +48,9 @@
         @else
           <a  class="btn btn-success">{{__t('instructor_assigned')}} </a>
         @endif
+    </td>
+    <td>
+    <input type="text" id="putPrice" name="putPrice" pattern="\d+(\.\d{1,2})?" placeholder="Price">
     </td>
     @endif
     @if (Auth::user()->user_type == 'instructor')
