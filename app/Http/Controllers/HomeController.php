@@ -6,6 +6,7 @@ use App\Category;
 use App\Course;
 use App\Post;
 use App\banner;
+use App\UserAssignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
@@ -19,8 +20,9 @@ class HomeController extends Controller
         $popular_courses = Course::publish()->whereIsPopular(1)->orderBy('popular_added_at', 'desc')->take(8)->get();
         $posts = Post::post()->publish()->take(3)->get();
         $banners = banner::all();
+        $assignments = UserAssignment::all()->toArray();
 
-        return view(theme('index'), compact('title', 'new_courses', 'featured_courses', 'popular_courses', 'posts', 'banners'));
+        return view(theme('index'), compact('title', 'new_courses', 'featured_courses', 'popular_courses', 'posts', 'banners', 'assignments'));
     }
 
     public function courses(Request $r)

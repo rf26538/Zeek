@@ -31,6 +31,59 @@ $(function () {
 	    , arrows: false
 	});
 
+    $('#approvePayment').click(function() {
+        let instructorId = $('#instructorId').val();
+        let assignmentId = $('#assignmentId').val();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            url: pageData.routes.approve_payment,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: {
+                aId: assignmentId,
+                iId: instructorId
+            },
+            success: function(resp) {
+                window.location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
+
+    $('#inputGroupFile').on('change', function() {
+        var files = $(this)[0].files;
+        $('#filePreview').empty(); // Clear previous previews
+        var fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        
+        if (files.length > 0) {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    var preview = '<div class="preview-container block1 same-ratio">';
+                    preview += '<button type="button" class="close remove-btn" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                    preview += '<img src="' + e.target.result + '" class="img-thumbnail-prev">';
+                    preview += '</div>';
+                    $('#filePreview').append(preview);
+                }
+
+                reader.readAsDataURL(file);
+            }
+        }
+    });
+
+    // Remove file preview when remove button is clicked
+    $(document).on('click', '.remove-btn', function() {
+        $(this).parent('.preview-container').remove();
+    });
+
     //Show file Name on select
     
     $('#assignmentFile').on('change', function(){

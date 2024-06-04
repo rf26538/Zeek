@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Payment;
-use App\assignment;
-use App\RegisterAssignment;
+use App\User;
+use App\UserAssignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -162,68 +162,90 @@ class DashboardController extends Controller
         return view(theme('dashboard.purchase_view'), compact('title', 'payment'));
     }
 
-    public function uploadAssignmentView(Request $request)
+    public function listAssignmentView(Request $request)
     {
-        return view(theme('dashboard.assignment_view'));
+        $assignments = UserAssignment::all()->toArray();
+        return view(theme('dashboard.assignment_view'), compact('assignments'));
     }
 
     public function assignmentRegisterView(Request $request)
     {
         return view(theme('dashboard.assignment_register_view'));
     }
+    public function assignAssignmentView($id)
+    {
+        $users = User::where('user_type', 'instructor')->get();
+        $assignment = UserAssignment::where('id', $id)->first();
+        return view(theme('dashboard.admin_assignment_assign_view'), compact('assignment', 'users'));
+    }
+    public function assignAssignmentInstructor(Request $request, $id)
+    {
+        UserAssignment::where('id', $id)->update(['assinged_user_id' => $request->select_option]);
+        $assignments = UserAssignment::all()->toArray();
+        return view(theme('dashboard.assignment_view'), compact('assignments'));
+    }
+
+    public function approvePayment(Request $request)
+    {
+        UserAssignment::where('id', $request->aId)
+                        ->where('assinged_user_id',$request->iId)
+                        ->update(['status' => 1]);
+        return response()->json(['success'=>'Payment approved']);
+    }
+
     public function registerAssignment(Request $request)
     {
-        dd($request->all());
-        RegisterAssignment::create([
-            'file_name' => $fileName,
-            'user_id' => $userId,
-        ]);
-
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time().'_'.$request->name.'.'.$file->getClientOriginalExtension();
-
+        if ($request->hasFile('assignments')) {
+            
+            $file = $request->file('assignments');
             $directory = public_path('uploads/studentsAssignments');
             if (!File::isDirectory($directory)) {
                 File::makeDirectory($directory, 0755, true, true);
             }
-
+             
+            $fileName = time().'_'.$request->name.'.'.$file->getClientOriginalExtension();
             $file->move($directory, $fileName);
 
-            assignment::create([
-                'file_name' => $fileName,
-                'user_id' => $userId,
+            UserAssignment::create([
+                'name' => $request->name,
+                'collage_name'  => $request->colgname,
+                'department_name'  => $request->depname,
+                'course_name'  => $request->crsname,
+                'description'  => $request->desc,
+                'page_number'  => $request->pagenum,
+                'assignment_files_name'  => $fileName,
+                'is_admin'  => 1
             ]);
 
-            return response()->json(['success'=>'File uploaded successfully.']);
+            return redirect()->back()->with('success', __a('settings_saved_msg'));
         }
     }
 
 
-    public function uploadAssignment(Request $request)
-    {
-        if (Auth::check()) {
-            $userId = Auth::id();
-            if ($request->hasFile('file')) {
-                $file = $request->file('file');
-                $fileName = time().'.'.$file->getClientOriginalExtension();
+    // public function uploadAssignment(Request $request)
+    // {
+    //     if (Auth::check()) {
+    //         $userId = Auth::id();
+    //         if ($request->hasFile('file')) {
+    //             $file = $request->file('file');
+    //             $fileName = time().'.'.$file->getClientOriginalExtension();
 
-                $directory = public_path('uploads/assignments');
-                if (!File::isDirectory($directory)) {
-                    File::makeDirectory($directory, 0755, true, true);
-                }
+    //             $directory = public_path('uploads/assignments');
+    //             if (!File::isDirectory($directory)) {
+    //                 File::makeDirectory($directory, 0755, true, true);
+    //             }
 
-                $file->move($directory, $fileName);
+    //             $file->move($directory, $fileName);
 
-                assignment::create([
-                    'file_name' => $fileName,
-                    'user_id' => $userId,
-                ]);
+    //             assignment::create([
+    //                 'file_name' => $fileName,
+    //                 'user_id' => $userId,
+    //             ]);
 
-                return response()->json(['success'=>'File uploaded successfully.']);
-            } else {
-                return response()->json(['error'=>'No file uploaded.']);
-            }
-        }
-    }
+    //             return response()->json(['success'=>'File uploaded successfully.']);
+    //         } else {
+    //             return response()->json(['error'=>'No file uploaded.']);
+    //         }
+    //     }
+    // }
 }

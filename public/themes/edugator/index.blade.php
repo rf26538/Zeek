@@ -31,15 +31,41 @@
 
     </div> -->
 
+    <div class="hero-banner py-3">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-6">
+
+                    <div class="hero-left-wrap">
+                        <h1 class="hero-title mb-4">{{__t('hero_title')}}</h1>
+                        <p class="hero-subtitle  mb-4">
+                            {!! __t('hero_subtitle') !!}
+                        </p>
+                        <a href="{{route('categories')}}" class="btn btn-theme-primary btn-lg">Browse Course</a>
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-12 col-lg-6 hero-right-col">
+                    <div class="hero-right-wrap">
+                        <img src="{{theme_url('images/hero-image.png')}}" class="img-fluid" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+<!--  BANNER SLIDER  -->
 <div class="hero-banner py-3">
-
-    <div class="container">
-        <div class="row">
+    <div class="row up">
             <div class="col-md-12 col-lg-6">
-
                 <div class="hero-left-wrap">
-                    <h1 class="hero-title mb-4">{{__t('hero_title')}}</h1>
-                    <p class="hero-subtitle  mb-4">
+                    <h1 class="hero-title mb-4 titleinfo">{{__t('hero_title')}}</h1>
+                    <p class="hero-subtitle  mb-4 titleinfo">
                         {!! __t('hero_subtitle') !!}
                     </p>
                     <a href="{{route('categories')}}" class="btn btn-theme-primary btn-lg">Browse Course</a>
@@ -47,20 +73,12 @@
 
             </div>
 
-
-            <div class="col-md-12 col-lg-6 hero-right-col">
-                <div class="hero-right-wrap">
-                    <img src="{{theme_url('images/hero-image.png')}}" class="img-fluid" />
+            <div class="col-md-12 col-lg-6">
+                <div class="hero-right-wrap" style="max-width: 100%; overflow: hidden;">
+                    <img src="{{theme_url('images/hero-image.png')}}" class="img-fluid fld" />
                 </div>
             </div>
         </div>
-    </div>
-
-
-</div>
-
-<!--  BANNER SLIDER  -->
-<div class="banner">
     <div class="row fullwidth">
         <div class="col-md-12">
             <ul class="bannerSlider">
@@ -80,94 +98,46 @@
 
 <!-- ASSIGMENT -->
 
-<!-- <div class="become-instructor-section"> -->
-    <div class="container">
-        <div class="row">
-        <a href="{{route('assignment_register_view')}}">
-            <div class="col mt-3">
-                <div class="col-md-4">
-                    <div class="card" style="width: 18rem;">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <div class="position-relative overflow-hidden" style="max-width: 100px; min-width: 100px; height: 100%;">
-                                    <img class="card-image" src="{{ asset('uploads/banner/Screenshot 2024-02-16 183217.png')}}" alt="IT 201 Final Summary, by Lashein .pdf" style="width: 100%; height: 100%;">
-                                    <div class="bg-gray-200 animate-pulse" style="width: 100%; height: 100%;"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title text-truncate">IT 201 Final Summary, by Lashein .pdf</h5>
-                                    <p class="card-text text-gray-800">Solutions available</p>
-                                    <p class="card-text">
-                                        <small class="text-muted">IT 201 - Saudi Electronic University</small>
-                                    </p>
-                                    <div class="d-flex mt-2">
-                                        <span class="bg-teal-200 text-teal-500 rounded-pill py-1 px-2 me-2">NOTES</span>
-                                        <span class="text-gray-600">65 views</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <div class="col mt-3">
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <div class="position-relative overflow-hidden" style="max-width: 100px; min-width: 100px; height: 100%;">
-                                <img class="card-image" src="{{ asset('uploads/banner/Screenshot 2024-02-16 183217.png')}}" alt="IT 201 Final Summary, by Lashein .pdf" style="width: 100%; height: 100%;">
-                                <div class="bg-gray-200 animate-pulse" style="width: 100%; height: 100%;"></div>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title text-truncate">IT 201 Final Summary, by Lashein .pdf</h5>
-                                <p class="card-text text-gray-800">Solutions available</p>
-                                <p class="card-text">
-                                    <small class="text-muted">IT 201 - Saudi Electronic University</small>
-                                </p>
-                                <div class="d-flex mt-2">
-                                    <span class="bg-teal-200 text-teal-500 rounded-pill py-1 px-2 me-2">NOTES</span>
-                                    <span class="text-gray-600">65 views</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="section-header-wrap">
+                <h3 class="section-title text-center">Assignments</h3>
             </div>
         </div>
-        <div class="col mt-3">
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <div class="position-relative overflow-hidden" style="max-width: 100px; min-width: 100px; height: 100%;">
-                                <img class="card-image" src="{{ asset('uploads/banner/Screenshot 2024-02-16 183217.png')}}" alt="IT 201 Final Summary, by Lashein .pdf" style="width: 100%; height: 100%;">
-                                <div class="bg-gray-200 animate-pulse" style="width: 100%; height: 100%;"></div>
-                            </div>
+    </div>
+    <div class="popular-courses-cards-wrap mt-3">
+        <div class="row">
+        @foreach ($assignments as $assignment)
+        @if ($assignment['is_admin'] == 1)
+                <div class="col-md-4 course-card-grid-wrap ">
+                    <div class="course-card mb-5">
+
+                        <div class="course-card-img-wrap">
+                            <a href="{{route('assignment_register_view')}}">
+                                <img src="{{ asset('uploads/studentsAssignments/'.$assignment['assignment_files_name'])}}" class="img-fluid">
+                            </a>
                         </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title text-truncate">IT 201 Final Summary, by Lashein .pdf</h5>
-                                <p class="card-text text-gray-800">Solutions available</p>
-                                <p class="card-text">
-                                    <small class="text-muted">IT 201 - Saudi Electronic University</small>
+                        
+                        <div class="course-card-contents">
+                            <a href="{{route('assignment_register_view')}}">
+                                <p class="course-card-short-info mb-2 d-flex justify-content-between">
+                                    <h4 class="course-card-title mb-3">{{$assignment['course_name']}}</h4>
+                                    <span>{{$assignment['assignment_files_name']}}</span>
+                                    <span>{{ $assignment['department_name'] }}</span>
+                                    <span>{{ $assignment['page_number'] }} pages</span>
                                 </p>
-                                <div class="d-flex mt-2">
-                                    <span class="bg-teal-200 text-teal-500 rounded-pill py-1 px-2 me-2">NOTES</span>
-                                    <span class="text-gray-600">65 views</span>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
+                @endif
+                @endforeach
             </div>
-        </div>  
     </div>
-<!-- </div> -->
+</div>
+
+<!-- ASSIGMENT END-->
 
 <div class="become-instructor-section">
     <div class="container">

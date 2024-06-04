@@ -85,8 +85,8 @@ function dashboard_menu()
             'icon' => '<i class="la la-history"></i>',
             'is_active' => request()->is('dashboard/purchases*'),
         ],
-        'upload_assignment_view' => [
-            'name' => __t('upload_assignment_view'),
+        'list_assignment_view' => [
+            'name' => __t('list_assignment_view'),
             'icon' => '<i class="la la-history"></i>'
         ],
         'profile_settings' => [

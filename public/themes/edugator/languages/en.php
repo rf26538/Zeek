@@ -336,5 +336,11 @@ return [
     'email_not_found' => 'No matching E-Mail address found',
     'invalid_reset_token' => 'Invalid Password Reset Token',
     'password_reset_success' => 'Password Reset Success',
-    'upload_assignment_view' => 'Upload Assignement',
+    'list_assignment_view' => 'List Assignement',
+    'approve' => 'Approve',
+    'approved' => 'Approved',
+    'assign_instructor' => 'Assign Instructor',
+    'instructor_assigned' => 'Instructor Assigned',
+    'pay_here' => 'Pay',
+    'download' => 'Download',
 ];

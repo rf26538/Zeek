@@ -234,10 +234,13 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('wishlist', 'DashboardController@wishlist')->name('wishlist');
 
     Route::get('my-quiz-attempts', 'QuizController@myQuizAttempts')->name('my_quiz_attempts');
-    Route::get('upload_assignment_view', 'DashboardController@uploadAssignmentView')->name('upload_assignment_view');
+    Route::get('list_assignment_view', 'DashboardController@listAssignmentView')->name('list_assignment_view');
     Route::post('upload_assignment', 'DashboardController@uploadAssignment')->name('upload_assignment');
     Route::get('assignment_register_view', 'DashboardController@assignmentRegisterView')->name('assignment_register_view');
     Route::post('register_assignment', 'DashboardController@registerAssignment')->name('register_assignment');
+    Route::get('assign_assignment_view/{id}', 'DashboardController@assignAssignmentView')->name('assign_assignment_view');
+    Route::post('assign_assignment_instructor/{id}', 'DashboardController@assignAssignmentInstructor')->name('assign_assignment_instructor');
+    Route::post('approve_payment', 'DashboardController@approvePayment')->name('approve_payment');
     
     Route::group(['prefix' => 'purchases'], function () {
         Route::get('/', 'DashboardController@purchaseHistory')->name('purchase_history');

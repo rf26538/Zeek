@@ -6,6 +6,67 @@
 *****************************************
 */
 
+.card-img-top-i {
+    width: 147%;
+    border-radius: 6px
+}
+
+.img-thumbnail-prev {
+    padding: .25rem;
+    background-color: #fff;
+    border-radius: 1.25rem;
+    max-width: 100%;
+    height: auto;
+}
+
+.block1 {
+    display: inline-block;
+    width: calc((100% - 40px ) / 3);     
+    box-sizing: border-box;
+  }
+  
+  .block1:not(:first-child) {
+    margin-left: 20px;
+  }
+  
+  /* height x width ratio */
+  
+  .same-ratio { 
+    position: relative;
+  }
+  
+  .same-ratio::after {
+    content: '';
+    display: block; 
+  }
+  
+  .same-ratio-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+
+.imgfluid{
+    max-width: 100%;
+}
+
+img.img-fluid.fld {
+    padding: 39px;
+}
+
+.row.up {
+    position: absolute !important;
+    z-index: 1;
+    margin: -58px 18px 33px 22px;
+    padding: 10px;
+}
+
+.titleinfo {
+    color: white;
+}
+
 /*reset*/
 ul.bannerSlider{
     padding-left:0;

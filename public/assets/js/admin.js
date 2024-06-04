@@ -18,10 +18,10 @@ $(function () {
 
     //Show file Name on select
     
-    $('#inputGroupFile').on('change', function(){
-        var fileName = $(this).val().split('\\').pop();
-        $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    });
+    // $('#inputGroupFile').on('change', function(){
+    //     var fileName = $(this).val().split('\\').pop();
+    //     $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    // });
 
     $('#inputGroupFile').on('change', function() {
         var files = $(this)[0].files;

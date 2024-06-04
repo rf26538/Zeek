@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RegisterAssignment extends Model
+class UserAssignment extends Model
 {
     protected $guarded = [];
 
@@ -14,7 +14,7 @@ class RegisterAssignment extends Model
    *
    * @var string
    */
-  protected $table = 'register_assignment';
+  protected $table = 'user_assignments';
 
   protected $fillable = [
         'name',
@@ -23,6 +23,7 @@ class RegisterAssignment extends Model
         'course_name',
         'description',
         'page_number',
-        'assignment_files_name'
+        'assignment_files_name',
+        'is_admin'
     ];
 }
