@@ -1,67 +1,9 @@
 @extends('layouts.theme')
-
-
 @section('content')
-
-<!-- <div class="hero-banner py-3">
-
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 col-lg-6">
-
-                    <div class="hero-left-wrap">
-                        <h1 class="hero-title mb-4">{{__t('hero_title')}}</h1>
-                        <p class="hero-subtitle  mb-4">
-                            {!! __t('hero_subtitle') !!}
-                        </p>
-                        <a href="{{route('categories')}}" class="btn btn-theme-primary btn-lg">Browse Course</a>
-                    </div>
-
-                </div>
-
-
-                <div class="col-md-12 col-lg-6 hero-right-col">
-                    <div class="hero-right-wrap">
-                        <img src="{{theme_url('images/hero-image.png')}}" class="img-fluid" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-    </div> -->
-
-    <div class="hero-banner py-3">
-
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 col-lg-6">
-
-                    <div class="hero-left-wrap">
-                        <h1 class="hero-title mb-4">{{__t('hero_title')}}</h1>
-                        <p class="hero-subtitle  mb-4">
-                            {!! __t('hero_subtitle') !!}
-                        </p>
-                        <a href="{{route('categories')}}" class="btn btn-theme-primary btn-lg">Browse Course</a>
-                    </div>
-
-                </div>
-
-
-                <div class="col-md-12 col-lg-6 hero-right-col">
-                    <div class="hero-right-wrap">
-                        <img src="{{theme_url('images/hero-image.png')}}" class="img-fluid" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
 
 <!--  BANNER SLIDER  -->
 <div class="hero-banner py-3">
-    <div class="row up">
+    <!-- <div class="row up">
             <div class="col-md-12 col-lg-6">
                 <div class="hero-left-wrap">
                     <h1 class="hero-title mb-4 titleinfo">{{__t('hero_title')}}</h1>
@@ -78,7 +20,7 @@
                     <img src="{{theme_url('images/hero-image.png')}}" class="img-fluid fld" />
                 </div>
             </div>
-        </div>
+        </div> -->
     <div class="row fullwidth">
         <div class="col-md-12">
             <ul class="bannerSlider">
@@ -99,13 +41,6 @@
 <!-- ASSIGMENT -->
 
 <div class="container mt-4">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="section-header-wrap">
-                <h3 class="section-title text-center">Assignments</h3>
-            </div>
-        </div>
-    </div>
     <div class="popular-courses-cards-wrap mt-3">
         <div class="row">
         @foreach ($assignments as $assignment)
@@ -115,7 +50,7 @@
 
                         <div class="course-card-img-wrap">
                             <a href="{{route('assignment_register_view')}}">
-                                <img src="{{ asset('uploads/studentsAssignments/'.$assignment['assignment_files_name'])}}" class="img-fluid">
+                                <img src="{{ asset('icons/pdf.png') }}" class="img-fluid">
                             </a>
                         </div>
                         
@@ -123,7 +58,7 @@
                             <a href="{{route('assignment_register_view')}}">
                                 <p class="course-card-short-info mb-2 d-flex justify-content-between">
                                     <h4 class="course-card-title mb-3">{{$assignment['course_name']}}</h4>
-                                    <span>{{$assignment['assignment_files_name']}}</span>
+                                    <span>{{$assignment['instructor_assignment_file_name']}}</span>
                                     <span>{{ $assignment['department_name'] }}</span>
                                     <span>{{ $assignment['page_number'] }} pages</span>
                                 </p>

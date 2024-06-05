@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('user_assignments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('collage_name');
-            $table->string('department_name');
-            $table->string('course_name');
-            $table->string('description');
-            $table->integer('page_number');
-            $table->string('assignment_files_name');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('name')->nullable();
+            $table->string('collage_name')->nullable();
+            $table->string('department_name')->nullable();
+            $table->string('course_name')->nullable();
+            $table->string('description')->nullable();
+            $table->integer('page_number')->nullable();
+            $table->string('assignment_file_name')->nullable();
+            $table->string('instructor_assignment_file_name')->nullable();
+            $table->integer('instructor_assignment')->nullable();
             $table->integer('is_admin');
             $table->timestamps();
         });

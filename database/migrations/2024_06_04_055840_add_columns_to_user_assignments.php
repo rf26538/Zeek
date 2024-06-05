@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('user_assignments', function (Blueprint $table) {
-            $table->string('status');
-            $table->integer('assinged_user_id')->nullable();
+            $table->string('status')->default(0)->after('is_admin');
+            $table->integer('assinged_user_id')->after('status')->nullable();
+            $table->string('amount')->after('assinged_user_id')->nullable();
         });
     }
 

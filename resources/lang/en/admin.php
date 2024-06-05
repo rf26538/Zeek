@@ -96,6 +96,7 @@ return [
     'enable_disable' => 'Enable/Disable',
     'save_settings' => 'Save settings',
     'settings_saved_msg' => 'Settings were saved successfully',
+    'assignment_upload_msg' => 'Assignment uploaded successfully',
     'test_mode' => 'Test mode',
     'enable_test_mode' => 'Enable test mode',
     'test_secret_key' => 'Test Secret Key',
@@ -277,4 +278,8 @@ return [
     'amazon_region' => 'Region',
     'bucket' => 'Bucket',
     'amazon_region_help' => 'Get actual region name',
+    'payment_approved' => 'Payment approved',
+    'amount_set_success' => 'Amount set successfully',
+    'assignment' => 'Assignment',
+    'assignment_list' => 'Assignment list',
 ];

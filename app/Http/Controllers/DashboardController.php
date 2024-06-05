@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
 {
@@ -240,18 +241,55 @@ class DashboardController extends Controller
         UserAssignment::where('id', $request->aId)
                         ->where('assinged_user_id',$request->iId)
                         ->update(['status' => 1]);
-        return response()->json(['success'=>'Payment approved']);
+        return redirect()->back()->with('success', __a('payment_approved'));
     }
     public function setAssignmentPayment(Request $request)
     {
         UserAssignment::where('id', $request->assignmentId)
                         ->where('assinged_user_id',$request->instructorId)
                         ->update(['amount' => $request->price]);
-        return response()->json(['success'=>'Amount set successfully']);
+        // return redirect()->back()->with('success', __a('amount_set_success'));
+
+        return response()->json(['success'=> __a('amount_set_success')]);
+    }
+    public function downloadAssignment(Request $request)
+    {
+        $as = UserAssignment::where('id', $request->aId)->first();
+
+        $imagePath = asset('uploads/studentsAssignments/' . $as->assignment_files_name);
+        return response()->json(['filename'=> $as->assignment_files_name, 'filePath' => $imagePath]);
     }
 
     public function registerAssignment(Request $request)
     {
+        $rules = [
+            'name' => 'required',
+            'colgname' => 'required',
+            'depname' => 'required',
+            'crsname' => 'required',
+            'desc' => 'required',
+            'pagenum' => 'required|numeric',
+            'assignments' => 'required|file',
+        ];
+
+        $messages = [
+            'name.required' => 'Please enter Title/Name',
+            'colgname.required' => 'Please enter School/Collage Name',
+            'depname.required' => 'Please enter Department Name',
+            'crsname.required' => 'Please enter Course Name',
+            'desc.required' => 'Please enter Description',
+            'pagenum.required' => 'Please enter Page Number',
+            'pagenum.numric' => 'Page Number should only be numbers.',
+            'assignments.required' => 'Please select a file',
+            'assignments.file' => 'Please upload a valid file.'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         if ($request->hasFile('assignments')) {
             
             $file = $request->file('assignments');
@@ -263,52 +301,26 @@ class DashboardController extends Controller
             $fileName = time().'_'.$request->name.'.'.$file->getClientOriginalExtension();
             $file->move($directory, $fileName);
 
-            if(Auth::user()->user_type == 'admin') {
-                $stat = 1;
+            $user = Auth::user();
+
+            if($user){
+                $userAssignment = new UserAssignment([
+                    'name' => $request->name,
+                    'collage_name'  => $request->colgname,
+                    'department_name'  => $request->depname,
+                    'course_name'  => $request->crsname,
+                    'description'  => $request->desc,
+                    'page_number'  => $request->pagenum,
+                    'assignment_file_name'  => $fileName,
+                    'instructor_assignment'  => 0,
+                    'is_admin'  => 0
+                ]);
+                $userAssignment->user_id = $user->id;
+                $userAssignment->save();
+                return redirect()->back()->with('success', __a('assignment_upload_msg'));
             } else {
-                $stat = 0;
+                return redirect()->back()->with('error', 'User not authenticated');
             }
-
-            UserAssignment::create([
-                'name' => $request->name,
-                'collage_name'  => $request->colgname,
-                'department_name'  => $request->depname,
-                'course_name'  => $request->crsname,
-                'description'  => $request->desc,
-                'page_number'  => $request->pagenum,
-                'assignment_files_name'  => $fileName,
-                'is_admin'  => $stat
-            ]);
-
-            return redirect()->back()->with('success', __a('settings_saved_msg'));
         }
     }
-
-
-    // public function uploadAssignment(Request $request)
-    // {
-    //     if (Auth::check()) {
-    //         $userId = Auth::id();
-    //         if ($request->hasFile('file')) {
-    //             $file = $request->file('file');
-    //             $fileName = time().'.'.$file->getClientOriginalExtension();
-
-    //             $directory = public_path('uploads/assignments');
-    //             if (!File::isDirectory($directory)) {
-    //                 File::makeDirectory($directory, 0755, true, true);
-    //             }
-
-    //             $file->move($directory, $fileName);
-
-    //             assignment::create([
-    //                 'file_name' => $fileName,
-    //                 'user_id' => $userId,
-    //             ]);
-
-    //             return response()->json(['success'=>'File uploaded successfully.']);
-    //         } else {
-    //             return response()->json(['error'=>'No file uploaded.']);
-    //         }
-    //     }
-    // }
 }

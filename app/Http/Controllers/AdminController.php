@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Course;
 use App\Withdraw;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\UserAssignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -190,5 +194,77 @@ class AdminController extends Controller
         $withdraws = $withdraws->orderBy('created_at', 'desc')->paginate(50);
 
         return view('admin.withdraws', compact('title', 'withdraws'));
+    }
+    public function adminAssignment(Request $request)
+    {
+        return view('admin.assignment');
+    }
+    public function adminAssignmentView(Request $request)
+    {
+        $assignments = UserAssignment::all()->toArray();
+        return view('admin.list_assignment', compact('assignments'));
+    }
+    public function adminAssignmentSubmit(Request $request)
+    {
+        $rules = [
+            'name' => 'required',
+            'colgname' => 'required',
+            'depname' => 'required',
+            'crsname' => 'required',
+            'desc' => 'required',
+            'pagenum' => 'required|numeric',
+            'assignments' => 'required|file', 
+        ];
+
+        $messages = [
+            'name.required' => 'Please enter Title/Name',
+            'colgname.required' => 'Please enter School/Collage Name',
+            'depname.required' => 'Please enter Department Name',
+            'crsname.required' => 'Please enter Course Name',
+            'desc.required' => 'Please enter Description',
+            'pagenum.required' => 'Please enter Page Number',
+            'pagenum.numric' => 'Page Number should only be numbers.',
+            'assignments.required' => 'Please select a file',
+            'assignments.file' => 'Please upload a valid file.'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if ($request->hasFile('assignments')) {
+            
+            $file = $request->file('assignments');
+            $directory = public_path('uploads/studentsAssignments');
+            if (!File::isDirectory($directory)) {
+                File::makeDirectory($directory, 0755, true, true);
+            }
+             
+            $fileName = time().'_'.$request->name.'.'.$file->getClientOriginalExtension();
+            $file->move($directory, $fileName);
+
+            $user = Auth::user();
+
+            if($user){
+                $userAssignment = new UserAssignment([
+                    'name' => $request->name,
+                    'collage_name'  => $request->colgname,
+                    'department_name'  => $request->depname,
+                    'course_name'  => $request->crsname,
+                    'description'  => $request->desc,
+                    'page_number'  => $request->pagenum,
+                    'instructor_assignment_file_name'  => $fileName,
+                    'instructor_assignment'  => 0,
+                    'is_admin'  => 1
+                ]);
+                $userAssignment->user_id = $user->id;
+                $userAssignment->save();
+                return redirect()->back()->with('success', __a('assignment_upload_msg'));
+            } else {
+                return redirect()->back()->with('error', 'User not authenticated');
+            }
+        }
     }
 }

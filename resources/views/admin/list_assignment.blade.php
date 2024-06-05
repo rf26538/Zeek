@@ -1,9 +1,22 @@
-@extends(theme('dashboard.layout'))
+@extends('layouts.admin')
+
+
+@section('page-header-right')
+
+    <a href="{{route('withdraws')}}" class="btn btn-dark ml-2" > <i class="la la-clock-o"></i> Pending</a>
+    <a href="{{route('withdraws', ['status' => 'success'])}}" class="btn btn-success ml-2" > <i class="la la-check-circle"></i> Success</a>
+    <a href="{{route('withdraws', ['status' => 'rejected'])}}" class="btn btn-warning ml-2" > <i class="la la-exclamation-circle"></i> Rejected</a>
+    <a href="{{route('withdraws', ['status' => 'all'])}}" class="btn btn-light ml-2" > <i class="la la-th-list"></i> All</a>
+
+@endsection
+
 @section('content')
 
 @if(isset($assignments) && count($assignments) > 0)
-<table class="table table-bordered bg-white">
+<table class="table table-bordered bg-white mt-3">
+
   <tr>
+    <th>Sr No.</th>
     <th>Assignment</th>
     <th>Collage Name</th>
     <th>Department</th>
@@ -11,20 +24,21 @@
     <th>Description</th>
     <th>Status</th>
     @if (Auth::user()->user_type == 'admin')
-    <th>Amount</th>
-    @endif
-    @if (Auth::user()->user_type == 'instructor' || Auth::user()->user_type == 'admin')
-    <th>Action</th>
+      <th>Amount</th>
+      @endif
+      @if (Auth::user()->user_type == 'instructor' || Auth::user()->user_type == 'admin')
+      <th>Action</th>
     @endif
     @if (Auth::user()->user_type == 'student')
-    <th>Price</th>
-    <th>Download assignment</th>
+      <th>Price</th>
+      <th>Download</th>
     @endif
   </tr>
 
   @foreach($assignments as $assignment)
 
   <tr>
+    <td>{{ $assignment['id'] }}</td>
     <td>
         <input type="hidden" id="asId" value="{{ $assignment['id'] }}">
         <a href="#" id="downloadFile"><img id="fileName" src="{{ asset('icons/pdf.png') }}" width="50" /></a>
@@ -75,7 +89,7 @@
           <input type="hidden" id="amount" value="{{ $assignment['amount'] }}">
           <button type="button" id="doPayment" class="btn btn-primary">{{__t('pay_here')}}</button>
         @else
-          <a type="button" id="downloadAssignment" class="btn btn-info">{{__t('download')}}</a>
+          <button type="button" id="downloadAssignment" class="btn btn-info">{{__t('download')}}</button>
         @endif
       </td>
     @endif

@@ -242,6 +242,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::post('assign_assignment_instructor/{id}', 'DashboardController@assignAssignmentInstructor')->name('assign_assignment_instructor');
     Route::post('approve_payment', 'DashboardController@approvePayment')->name('approve_payment');
     Route::post('set_assignment_payment', 'DashboardController@setAssignmentPayment')->name('set_assignment_payment');
+    Route::post('download_assignment', 'DashboardController@downloadAssignment')->name('download_assignment');
+    Route::get('admin_assignment', 'AdminController@adminAssignment')->name('admin_assignment');
+    Route::get('admin_assignment_view', 'AdminController@adminAssignmentView')->name('admin_assignment_view');
+    Route::post('admin_assignment_submit', 'AdminController@adminAssignmentSubmit')->name('admin_assignment_submit');
+    Route::post('/payment/callback', 'RazorPaymentController@handleCallback');
     
     Route::group(['prefix' => 'purchases'], function () {
         Route::get('/', 'DashboardController@purchaseHistory')->name('purchase_history');

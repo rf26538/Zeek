@@ -15,6 +15,7 @@ $(function () {
         $('select.select2').select2();
     }
 
+
     $(document).on('click', '.open_login_modal', function (e) {
         e.preventDefault();
         $('#loginFormModal').modal('show');

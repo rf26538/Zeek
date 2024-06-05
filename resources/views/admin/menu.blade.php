@@ -28,6 +28,8 @@
             </li>
 
             <li> <a href="{{route('admin_courses')}}"><i class="la la-chalkboard"></i> {{__a('courses')}}</a>  </li>
+            <li> <a href="{{route('admin_assignment')}}"><i class="la la-chalkboard"></i> {{__a('assignment')}}</a>  </li>
+            <li> <a href="{{route('admin_assignment_view')}}"><i class="la la-chalkboard"></i> {{__a('assignment_list')}}</a>  </li>
 
             <!-- <li>
                 <a href="{{route('plugins')}}" class="{{request()->is('admin/plugins*') ? 'active' : ''}}" >

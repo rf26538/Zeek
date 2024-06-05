@@ -23,7 +23,9 @@ class UserAssignment extends Model
         'course_name',
         'description',
         'page_number',
-        'assignment_files_name',
+        'assignment_file_name',
+        'instructor_assignment_file_name',
+        'instructor_assignment',
         'is_admin'
     ];
 }
