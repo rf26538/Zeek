@@ -543,7 +543,9 @@ Home popular courses
     height: auto;
 }
 .course-card .course-card-contents {
+    background-color: #8fbcf0;
     padding: 10px;
+    border-radius: 9px;
 }
 .course-card a {
     color: #29303b;
