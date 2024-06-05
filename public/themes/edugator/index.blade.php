@@ -45,9 +45,8 @@
         <div class="row">
         @foreach ($assignments as $assignment)
         @if ($assignment['is_admin'] == 1)
-                <div class="col-md-4 course-card-grid-wrap ">
+                <div class="col-md-3 course-card-grid-wrap">
                     <div class="course-card mb-5">
-
                         <div class="course-card-img-wrap">
                             <a href="{{route('assignment_register_view')}}">
                                 <img src="{{ asset('icons/pdf.png') }}" class="img-fluid">
