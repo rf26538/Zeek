@@ -14,11 +14,11 @@
     <th>Amount</th>
     @endif
     @if (Auth::user()->user_type == 'instructor' || Auth::user()->user_type == 'admin')
-    <th>Action</th>
+    <th>Instructor Assignment</th>
     @endif
     @if (Auth::user()->user_type == 'student')
     <th>Price</th>
-    <th>Download assignment</th>
+    <th>Action</th>
     @endif
   </tr>
 
@@ -26,18 +26,19 @@
 
   <tr>
     <td>
-        <input type="hidden" id="asId" value="{{ $assignment['id'] }}">
-        <a href="#" id="downloadFile"><img id="fileName" src="{{ asset('icons/pdf.png') }}" width="50" /></a>
+      <a href="{{ asset('/uploads/studentsAssignments/' . $assignment['assignment_file_name']) }}" id="downloadFile" download>{{ $assignment['assignment_file_name'] }}</a>
     </td>
     <td>{{ $assignment['collage_name'] }}</td>
     <td>{{ $assignment['department_name'] }}</td>
     <td><strong>{{$assignment['course_name']}}</td>
     <td>{{ $assignment['description'] }}</td>
     <td>
-      @if ($assignment['status'] == 0)
-        <span class="badge payment-status-initial badge-secondary"> <i class="la la-clock-o"></i>In-Progress</span>
-        @else
-        <span class="badge payment-status-success badge-success"> <i class="la la-check-circle"></i>Completed</span>
+      @if ($assignment['status'] == 1)
+        <span class="badge payment-status-success badge-primary">Assigned</span>
+      @elseif ($assignment['status'] == 2)
+        <span class="badge payment-status-success badge-success">Completed</span>
+      @elseif ($assignment['status'] == 3)
+      <span class="badge payment-status-success badge-success">Paid</span>
       @endif
     </td>
 
@@ -57,14 +58,13 @@
     @endif
     @if (Auth::user()->user_type == 'instructor')
     <td>
-        @if ($assignment['status'] == 0)
-          <input type="hidden" id="assignmentId" value="{{ $assignment['id'] }}">
-          <input type="hidden" id="instructorId" value="{{ $assignment['assinged_user_id'] }}">
-          <button type="button" id="approvePayment" class="btn btn-secondary"><i class="la la-check-double"></i></button>
+        @if ($assignment['status'] == 2)
+        <a href="{{ asset('/uploads/studentsAssignments/' . $assignment['instructor_assignment_file_name']) }}" id="downloadFile" download>{{ $assignment['instructor_assignment_file_name'] }}</a>
         @else
-          <button type="button" class="btn btn-success"><i class="la la-check-double"></i></button>
-        @endif
-        <button type="button" data-toggle="tooltip" title="" id="button-upload" class="btn btn-primary" data-upload-success="reload" data-original-title="Upload"><i class="la la-upload"></i></button>
+        <a href="{{ route('instructor_assignment_edit', $assignment['id'])}}" class="btn btn-primary"> 
+            <i class="la la-upload"></i>  
+          </a>
+      @endif
     </td>
     @endif
     @if (Auth::user()->user_type == 'student')
@@ -73,9 +73,9 @@
         @if ($assignment['status'] == 0)
           <input type="hidden" id="assignmentId" value="{{ $assignment['id'] }}">
           <input type="hidden" id="amount" value="{{ $assignment['amount'] }}">
-          <button type="button" id="doPayment" class="btn btn-primary">{{__t('pay_here')}}</button>
+          <button type="button" id="doPayment" class="btn btn-primary"><i class="la la-clock-o"></i></button>
         @else
-          <a type="button" id="downloadAssignment" class="btn btn-info">{{__t('download')}}</a>
+          <a type="button" id="downloadAssignment" class="btn btn-info"><i class="la la-clock-o"></i></a>
         @endif
       </td>
     @endif

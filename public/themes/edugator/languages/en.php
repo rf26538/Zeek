@@ -336,7 +336,7 @@ return [
     'email_not_found' => 'No matching E-Mail address found',
     'invalid_reset_token' => 'Invalid Password Reset Token',
     'password_reset_success' => 'Password Reset Success',
-    'list_assignment_view' => 'List Assignement',
+    'list_assignment_view' => 'Assignement List',
     'approve' => 'Approve',
     'approved' => 'Approved',
     'assign_instructor' => 'Assign Instructor',

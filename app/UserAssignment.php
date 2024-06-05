@@ -2,30 +2,41 @@
 
 namespace App;
 
+use App\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserAssignment extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
 
     /**
-   * The table associated with the model.
-   *
-   * @var string
-   */
-  protected $table = 'user_assignments';
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'user_assignments';
 
-  protected $fillable = [
+    protected $fillable = [
         'name',
-        'collage_name',
+        'college_name',
         'department_name',
         'course_name',
         'description',
         'page_number',
+        'collage_name',
         'assignment_file_name',
         'instructor_assignment_file_name',
-        'instructor_assignment',
-        'is_admin'
+        'is_for_dashboard',
+        'is_admin',
+        'assinged_user_id' // Corrected field name
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assinged_user_id', 'id');
+    }
 }

@@ -15,39 +15,72 @@ $(function () {
         $('select.select2').select2();
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        var courseSlider = document.getElementById('courseSlider');
+        if (courseSlider) {
+            new Slick(courseSlider, {
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 2000
+            });
+        }
+    });
+
 
     //Show file Name on select
-    
+
     // $('#inputGroupFile').on('change', function(){
     //     var fileName = $(this).val().split('\\').pop();
     //     $(this).next('.custom-file-label').addClass("selected").html(fileName);
     // });
 
-    $('#inputGroupFile').on('change', function() {
-        var files = $(this)[0].files;
-        $('#filePreview').empty(); // Clear previous previews
+    // $('#inputGroupFile').on('change', function () {
+    //     var files = $(this)[0].files;
+    //     $('#filePreview').empty(); // Clear previous previews
 
-        if (files.length > 0) {
-            document.getElementById('numfiles').innerText = files.length + ' files selected';
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                var reader = new FileReader();
+    //     if (files.length > 0) {
+    //         document.getElementById('numfiles').innerText = files.length + ' files selected';
+    //         for (var i = 0; i < files.length; i++) {
+    //             var file = files[i];
+    //             var reader = new FileReader();
 
-                reader.onload = function(e) {
-                    var preview = '<div class="preview-container block1 same-ratio">';
-                    preview += '<button type="button" class="close remove-btn" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-                    preview += '<img src="' + e.target.result + '" class="img-thumbnail-prev">';
-                    preview += '</div>';
-                    $('#filePreview').append(preview);
-                }
+    //             reader.onload = function (e) {
+    //                 var preview = '<div class="preview-container block1 same-ratio">';
+    //                 preview += '<button type="button" class="close remove-btn" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 
-                reader.readAsDataURL(file);
-            }
-        }
-    });
+    //                 var fileType = getFileTypeIcon(file.type); // Get file type icon based on MIME type
+
+    //                 // Append file preview with appropriate icon
+    //                 preview += fileType === 'pdf' ? '<i class="far fa-file-pdf"></i>' :
+    //                     fileType === 'doc' ? '<i class="far fa-file-word"></i>' :
+    //                         fileType.startsWith('image/') ? '<img src="' + e.target.result + '" class="img-thumbnail-prev">' :
+    //                             '<i class="far fa-file"></i>';
+
+    //                 preview += '</div>';
+    //                 $('#filePreview').append(preview);
+    //             }
+
+    //             reader.readAsDataURL(file);
+    //         }
+    //     }
+    // });
+
+    // function getFileTypeIcon(fileType) {
+    //     if (fileType === 'application/pdf') {
+    //         return 'pdf';
+    //     } else if (fileType === 'application/msword' || fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    //         return 'doc';
+    //     } else if (fileType.startsWith('image/')) {
+    //         return 'image';
+    //     } else {
+    //         return 'other';
+    //     }
+    // }
+
 
     // Remove file preview when remove button is clicked
-    $(document).on('click', '.remove-btn', function() {
+    $(document).on('click', '.remove-btn', function () {
         $(this).parent('.preview-container').remove();
     });
 

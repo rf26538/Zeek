@@ -165,7 +165,8 @@ class DashboardController extends Controller
 
     public function listAssignmentView(Request $request)
     {
-        $assignments = UserAssignment::all()->toArray();
+        $user = Auth::user();
+        $assignments = UserAssignment::where('assinged_user_id', $user->id)->get()->toArray();
         return view(theme('dashboard.assignment_view'), compact('assignments'));
     }
 
@@ -322,5 +323,51 @@ class DashboardController extends Controller
                 return redirect()->back()->with('error', 'User not authenticated');
             }
         }
+    }
+
+    public function editInstructorAssigment($id)
+    {
+        $assignment = UserAssignment::where('assinged_user_id', $id)->first();
+        $title = __a('assignment_list');
+        return view(theme('dashboard.edit_assignment'), compact('assignment', 'title'));
+    }
+    public function submitInstructorAssigment(Request $request)
+    {
+        $rules = [
+            'instructorAssignment' => 'required|file',
+        ];
+        
+        $messages = [
+            'instructorAssignment.required' => 'Please select a file',
+            'instructorAssignment.file' => 'Please upload a valid file.',
+            'instructorAssignment.mimes' => 'Only PDF and Word files are allowed.'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        $validator->sometimes('instructorAssignment', 'mimes:pdf,doc,docx', function ($input) {
+            return $input->hasFile('instructorAssignment');
+        });
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if ($request->hasFile('instructorAssignment')) {
+            
+            $file = $request->file('instructorAssignment');
+            $directory = public_path('uploads/InstructorAssignment');
+            if (!File::isDirectory($directory)) {
+                File::makeDirectory($directory, 0755, true, true);
+            }
+             
+            $fileName = time().'_Instructor.'.$file->getClientOriginalExtension();
+            $file->move($directory, $fileName);
+
+            UserAssignment::where('id', $request->id)
+            ->update(['instructor_assignment_file_name' => $fileName, 'status' => 2]);
+        } 
+        
+        return redirect()->back()->with('success', 'File uploaded successfully');
     }
 }

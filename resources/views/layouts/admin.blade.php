@@ -75,12 +75,10 @@
                     {!! $auth_user->get_photo !!}
                     <span class="user-name">{{$auth_user->name}}</span>
                 </a>
-
                 <div role="menu" class="dropdown-menu">
                     <a href="{{route('profile_settings')}}" class="dropdown-item" target="_blank"><i class="la la-user"></i> {{__('admin.profile')}}</a>
                     <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-
                         <i class="la la-sign-out"></i> {{ __('Logout') }}
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -89,14 +87,8 @@
                 </div>
             </li>
         </ul>
-
     </div>
-
-
 </nav>
-
-
-
 
 <div class="dashboard-wrap">
     <div class="container-fluid">

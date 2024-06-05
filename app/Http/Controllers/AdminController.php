@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Course;
 use App\Withdraw;
 use Carbon\Carbon;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use App\UserAssignment;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class AdminController extends Controller
         $end_date = date('Y-m-t');
 
         $begin = new \DateTime($start_date);
-        $end = new \DateTime($end_date.' + 1 day');
+        $end = new \DateTime($end_date . ' + 1 day');
         $interval = \DateInterval::createFromDateString('1 day');
         $period = new \DatePeriod($begin, $interval, $end);
 
@@ -201,11 +202,22 @@ class AdminController extends Controller
     }
     public function adminAssignmentView(Request $request)
     {
-        $assignments = UserAssignment::all()->toArray();
+        $assignments = UserAssignment::orderBy('id', 'desc')->with('user')->get()->toArray();
+
         return view('admin.list_assignment', compact('assignments'));
+    }
+
+    public function editAssigment($id)
+    {
+        $assignment = UserAssignment::with('user')->find($id);
+        $users = User::where('user_type', 'instructor')->get();
+        $title = __a('assignment_list');
+
+        return view('admin.assigmentedit', compact('assignment', 'users', 'title'));
     }
     public function adminAssignmentSubmit(Request $request)
     {
+
         $rules = [
             'name' => 'required',
             'colgname' => 'required',
@@ -213,41 +225,47 @@ class AdminController extends Controller
             'crsname' => 'required',
             'desc' => 'required',
             'pagenum' => 'required|numeric',
-            'assignments' => 'required|file', 
+            'assignments' => 'required|file', // Check if 'assignments' field is not empty and is a file
         ];
 
         $messages = [
             'name.required' => 'Please enter Title/Name',
-            'colgname.required' => 'Please enter School/Collage Name',
+            'colgname.required' => 'Please enter School/College Name',
             'depname.required' => 'Please enter Department Name',
             'crsname.required' => 'Please enter Course Name',
             'desc.required' => 'Please enter Description',
             'pagenum.required' => 'Please enter Page Number',
-            'pagenum.numric' => 'Page Number should only be numbers.',
+            'pagenum.numeric' => 'Page Number should only be numbers.',
             'assignments.required' => 'Please select a file',
-            'assignments.file' => 'Please upload a valid file.'
+            'assignments.file' => 'Please upload a valid file.',
+            'assignments.mimes' => 'Only PDF and Word files are allowed.',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
+
+        // Check if 'assignments' field is not empty before checking its MIME type
+        $validator->sometimes('assignments', 'mimes:pdf,doc,docx', function ($input) {
+            return $input->hasFile('assignments'); // Check if 'assignments' field is a file
+        });
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         if ($request->hasFile('assignments')) {
-            
+
             $file = $request->file('assignments');
             $directory = public_path('uploads/studentsAssignments');
             if (!File::isDirectory($directory)) {
                 File::makeDirectory($directory, 0755, true, true);
             }
-             
-            $fileName = time().'_'.$request->name.'.'.$file->getClientOriginalExtension();
+
+            $fileName = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
             $file->move($directory, $fileName);
 
             $user = Auth::user();
 
-            if($user){
+            if ($user) {
                 $userAssignment = new UserAssignment([
                     'name' => $request->name,
                     'collage_name'  => $request->colgname,
@@ -255,8 +273,8 @@ class AdminController extends Controller
                     'course_name'  => $request->crsname,
                     'description'  => $request->desc,
                     'page_number'  => $request->pagenum,
-                    'instructor_assignment_file_name'  => $fileName,
-                    'instructor_assignment'  => 0,
+                    'assignment_file_name'  => $fileName,
+                    'is_for_dashboard'  => 1,
                     'is_admin'  => 1
                 ]);
                 $userAssignment->user_id = $user->id;
@@ -266,5 +284,31 @@ class AdminController extends Controller
                 return redirect()->back()->with('error', 'User not authenticated');
             }
         }
+    }
+    public function adminAssignmentUpdate(Request $request)
+    {   
+
+        $rules = [
+            'assinged_user_id' => 'required',
+            'is_for_dashboard' => 'integer',
+            'amount' => 'required|integer', 
+        ];
+        
+        $messages = [
+            'assinged_user_id.required' => 'Please select an instructor',
+            'amount.required' => 'Please enter an amount',
+            'amount.integer' => 'The amount must be an integer',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        UserAssignment::where('id', $request->id)
+        ->update(['assinged_user_id' => $request->assinged_user_id, 'amount' => $request->amount, 'is_for_dashboard' => $request->is_for_dashboard, 'status' => 1]);
+    
+        return redirect()->route('admin_assignment_view')->with('success', 'Instructor assigned successfully');
     }
 }

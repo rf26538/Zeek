@@ -1,5 +1,44 @@
 @extends('layouts.theme')
 @section('content')
+<style>
+    .course-card-img-wrap {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pdf-preview {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.9);
+        /* Background color for the preview */
+    }
+
+    .course-card-img-wrap:hover .pdf-preview {
+        display: block;
+    }
+
+    .course-card-img-wrap:hover .course-image {
+        visibility: hidden;
+        /* Hide the original image on hover */
+    }
+
+    .truncate-text {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        display: block;
+    }
+
+    .truncate-text:hover {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+</style>
 
 <!--  BANNER SLIDER  -->
 <div class="hero-banner py-3">
@@ -21,7 +60,7 @@
                 </div>
             </div>
         </div> -->
-    <div class="row fullwidth">
+    <div class="fullwidth">
         <div class="col-md-12">
             <ul class="bannerSlider">
                 @foreach($banners as $banner)
@@ -41,36 +80,92 @@
 <!-- ASSIGMENT -->
 
 <div class="container mt-4">
-    <div class="popular-courses-cards-wrap mt-3">
+    <!-- <div class="popular-courses-cards-wrap mt-3">
         <div class="row">
-        @foreach ($assignments as $assignment)
-        @if ($assignment['is_admin'] == 1)
-                <div class="col-md-3 course-card-grid-wrap">
-                    <div class="course-card mb-5">
-                        <div class="course-card-img-wrap">
-                            <a href="{{route('assignment_register_view')}}">
-                                <img src="{{ asset('icons/pdf.png') }}" class="img-fluid">
-                            </a>
+            @php $count = 0; @endphp
+            @foreach ($assignments as $assignment)
+                @if ($assignment['is_admin'] == 1 && $count < 4) 
+                    <div class="col-md-3 course-card-grid-wrap">
+                        <div class="course-card mb-5">
+                            <div class="course-card-img-wrap">
+                                <a href="{{ route('assignment_register_view') }}"> -->
+    <!-- Use a placeholder image for the course -->
+    <!-- <img src="{{ asset('icons/pdf.png') }}" class="img-fluid course-image"> -->
+    <!-- Include a div for the PDF preview -->
+    <!-- <div class="pdf-preview"></div> -->
+    <!-- </a>
+                            </div>
+                            <div class="course-card-contents">
+                                <a href="{{ route('assignment_register_view') }}"> -->
+    <!-- Display course information -->
+    <!-- <p class="course-card-short-info mb-2 d-flex justify-content-between">
+                                        <h4 class="course-card-title mb-3">{{ $assignment['course_name'] }}</h4>
+                                        <span>{{ $assignment['instructor_assignment_file_name'] }}</span>
+                                        <span>{{ $assignment['department_name'] }}</span>
+                                        <span>{{ $assignment['page_number'] }} pages</span>
+                                    </p>
+                                </a>
+                            </div>
                         </div>
-                        
-                        <div class="course-card-contents">
-                            <a href="{{route('assignment_register_view')}}">
-                                <p class="course-card-short-info mb-2 d-flex justify-content-between">
-                                    <h4 class="course-card-title mb-3">{{$assignment['course_name']}}</h4>
-                                    <span>{{$assignment['instructor_assignment_file_name']}}</span>
-                                    <span>{{ $assignment['department_name'] }}</span>
-                                    <span>{{ $assignment['page_number'] }} pages</span>
-                                </p>
+                    </div> -->
+    <!-- @php $count++; @endphp -->
+    <!-- @endif -->
+    <!-- @endforeach -->
+    <!-- </div> -->
+    <!-- </div> -->
+    @if (!empty($assignments))
+    <div id="courseCarousel" class="carousel slide" data-interval="false">
+        <div class="carousel-inner">
+            @php $count = 0; @endphp
+            @foreach ($assignments as $assignment)
+            @if ($assignment['is_admin'] == 1)
+            @if ($count % 4 == 0)
+            <div class="carousel-item {{ $count == 0 ? 'active' : '' }}">
+                <div class="row">
+                    @endif
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <a href="{{ route('assignment_register_view') }}" class="text-decoration-none">
+                                <div class="position-relative">
+                                    <div class="card-img-top">
+                                        <img src="{{ asset('icons/pdf.png') }}" alt="Course Image" class="w-100">
+                                        <div class="overlay"></div>
+                                    </div>
+                                    <div class="card-body p-3">
+                                        <h5 class="card-title truncate-text">{{ $assignment['course_name'] }}</h5>
+                                        <p class="card-text text-muted truncate-text">{{ $assignment['instructor_assignment_file_name'] }}</p>
+                                        <p class="card-text text-muted truncate-text">{{ $assignment['department_name'] }}</p>
+                                        <p class="card-text text-muted truncate-text">{{ $assignment['page_number'] }} pages</p>
+                                    </div>
+                                </div>
                             </a>
                         </div>
                     </div>
+                    @php $count++; @endphp
+                    @if ($count % 4 == 0 || $loop->last)
                 </div>
-                @endif
-                @endforeach
             </div>
+            @endif
+            @endif
+            @endforeach
+        </div>
+        <a class="carousel-control-prev" href="#courseCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#courseCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
-</div>
+    @endif
 
+    <script>
+        $(document).ready(function() {
+        var numItems = $('.carousel-item').length;
+        if (numItems <= 1) { $('.carousel-control-prev, .carousel-control-next').hide(); } $('#courseCarousel').carousel({ interval: false, wrap: false }); }); 
+        </script>
+</div>
 <!-- ASSIGMENT END-->
 
 <div class="become-instructor-section">

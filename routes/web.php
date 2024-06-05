@@ -239,13 +239,18 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('assignment_register_view', 'DashboardController@assignmentRegisterView')->name('assignment_register_view');
     Route::post('register_assignment', 'DashboardController@registerAssignment')->name('register_assignment');
     Route::get('assign_assignment_view/{id}', 'DashboardController@assignAssignmentView')->name('assign_assignment_view');
+    Route::get('instructor_assignment_edit/{id}', 'DashboardController@editInstructorAssigment')->name('instructor_assignment_edit');
+    Route::post('instructor_assignment_update', 'DashboardController@submitInstructorAssigment')->name('instructor_assignment_update');
     Route::post('assign_assignment_instructor/{id}', 'DashboardController@assignAssignmentInstructor')->name('assign_assignment_instructor');
     Route::post('approve_payment', 'DashboardController@approvePayment')->name('approve_payment');
     Route::post('set_assignment_payment', 'DashboardController@setAssignmentPayment')->name('set_assignment_payment');
     Route::post('download_assignment', 'DashboardController@downloadAssignment')->name('download_assignment');
+    Route::post('upload_assignment', 'DashboardController@uploadAssignment')->name('upload_assignment');
     Route::get('admin_assignment', 'AdminController@adminAssignment')->name('admin_assignment');
     Route::get('admin_assignment_view', 'AdminController@adminAssignmentView')->name('admin_assignment_view');
     Route::post('admin_assignment_submit', 'AdminController@adminAssignmentSubmit')->name('admin_assignment_submit');
+    Route::post('admin_assignment_update', 'AdminController@adminAssignmentUpdate')->name('admin_assignment_update');
+    Route::get('admin_assignment_edit/{id}', 'AdminController@editAssigment')->name('admin_assignment_edit');
     Route::post('/payment/callback', 'RazorPaymentController@handleCallback');
     
     Route::group(['prefix' => 'purchases'], function () {
