@@ -107,8 +107,6 @@
     @include(theme('template-part.login-modal-form'))
 @endif
 
-<!-- jquery latest version -->
-<script src="{{asset('assets/js/vendor/jquery-1.12.0.min.js')}}"></script>
 <!-- bootstrap js -->
 <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
 
@@ -117,8 +115,6 @@
 <!-- main js -->
 <script src="{{theme_asset('js/main.js')}}"></script>
 <script src="{{theme_asset('js/razor.js')}}"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.min.js"></script>
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.css"/>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 </body>

@@ -198,7 +198,8 @@ class AdminController extends Controller
     }
     public function adminAssignment(Request $request)
     {
-        return view('admin.assignment');
+        $title = __a('create_assignment');
+        return view('admin.assignment', compact('title'));
     }
     public function adminAssignmentView(Request $request)
     {

@@ -39,6 +39,16 @@
         <th>{{__a('file')}}</th>
         <td><a href="{{ asset('/uploads/studentsAssignments/' . $assignment['assignment_file_name']) }}" id="downloadFile" download>{{ $assignment['assignment_file_name'] }}</a></td>
     </tr>
+    <th>{{__a('ans_sheet')}}</th>
+        <td>
+            @if($assignment['instructor_assignment_file_name'])
+            <a href="{{ asset('/uploads/InstructorAssignment/' . $assignment['instructor_assignment_file_name']) }}" download>{{ $assignment['instructor_assignment_file_name'] }}</a>
+            @else
+            <span>Not Available Yet</span>
+            @endif
+        </td>
+
+    </tr>
 
 </table>
 
@@ -74,7 +84,7 @@
             @enderror
         </div>
         <div class="col-md-3">
-            <button type="submit" class="btn btn-info mb-2">{{__a('update_status')}}</button>
+            <button type="submit" class="btn btn-info mb-2">{{__a('update')}}</button>
         </div>
     </div>
 </form>

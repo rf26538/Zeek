@@ -251,6 +251,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::post('admin_assignment_submit', 'AdminController@adminAssignmentSubmit')->name('admin_assignment_submit');
     Route::post('admin_assignment_update', 'AdminController@adminAssignmentUpdate')->name('admin_assignment_update');
     Route::get('admin_assignment_edit/{id}', 'AdminController@editAssigment')->name('admin_assignment_edit');
+    Route::get('assignment_edit/{id}', 'DashboardController@editAssigment')->name('assignment_edit');
     Route::post('/payment/callback', 'RazorPaymentController@handleCallback');
     
     Route::group(['prefix' => 'purchases'], function () {

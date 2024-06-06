@@ -45,7 +45,7 @@
     <td>
       <input type="hidden" id="asId" value="{{ $assignment['id'] }}">
       <a href="{{ asset('/uploads/studentsAssignments/' . $assignment['assignment_file_name']) }}" id="downloadFile" download>{{ $assignment['assignment_file_name'] }}</a>
-      
+
     </td>
     <td>{{ $assignment['user'] ? $assignment['user']['name'] : ''}}</td>
     <td>{{ $assignment['collage_name'] }}</td>
@@ -53,11 +53,11 @@
     <td>{{ $assignment['course_name']}}</td>
     <td>
       @if ($assignment['status'] == 0)
-        <span class="badge payment-status-initial badge-secondary">{{ __a('in_progress') }}</span>
+      <span class="badge payment-status-initial badge-secondary">{{ __a('in_progress') }}</span>
       @elseif ($assignment['status'] == 1)
-        <span class="badge payment-status-success badge-primary">{{ __a('assigned') }}</span>
+      <span class="badge payment-status-success badge-primary">{{ __a('assigned') }}</span>
       @elseif ($assignment['status'] == 2)
-        <span class="badge payment-status-success badge-success">{{ __a('completed') }}</span>
+      <span class="badge payment-status-success badge-success">{{ __a('completed') }}</span>
       @elseif ($assignment['status'] == 3)
       <span class="badge payment-status-success badge-success">{{ __a('paid') }}</span>
       @endif
@@ -68,9 +68,9 @@
       {{$assignment['amount'] ?? 0}}
     </td>
     <td>
-      <a href="{{ route('admin_assignment_edit', $assignment['id'])}}" class="btn btn-info"> 
-        <span class="badge badge-info mx-2" data-toggle="tooltip" title="" data-original-title="Edit"> 
-          <i class="la la-eye"></i>  
+      <a href="{{ route('admin_assignment_edit', $assignment['id'])}}" class="btn btn-info">
+        <span class="badge badge-info mx-2" data-toggle="tooltip" title="" data-original-title="Edit">
+          <i class="la la-eye"></i>
         </span>
       </a>
     </td>

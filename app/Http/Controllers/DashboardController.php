@@ -166,8 +166,22 @@ class DashboardController extends Controller
     public function listAssignmentView(Request $request)
     {
         $user = Auth::user();
-        $assignments = UserAssignment::where('user_id', $user->id)->get()->toArray();
+        $condition = ['user_id' => $user->id];
+
+        if($user->user_type == 'instructor') { 
+            $condition = ['assinged_user_id'=> $user->id];
+        }
+
+        $assignments = UserAssignment::where($condition)->get()->toArray();
         return view(theme('dashboard.assignment_view'), compact('assignments'));
+    }
+
+    public function editAssigment($id)
+    {
+        $assignment = UserAssignment::with('user')->find($id);
+        $title = __a('assignment_list');
+        
+        return view(theme('dashboard.assignmentedit'), compact('assignment', 'title'));
     }
 
     public function assignmentRegisterView(Request $request)
@@ -288,8 +302,10 @@ class DashboardController extends Controller
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
+
+        // Check if 'assignments' field is not empty before checking its MIME type
         $validator->sometimes('assignments', 'mimes:pdf,doc,docx', function ($input) {
-            return $input->hasFile('assignments');
+            return $input->hasFile('assignments'); // Check if 'assignments' field is a file
         });
 
         if ($validator->fails()) {
@@ -324,7 +340,7 @@ class DashboardController extends Controller
                 $userAssignment->user_id = $user->id;
                 $userAssignment->save();
             }
-            return redirect()->route('list_assignment_view');
+            return redirect()->route('list_assignment_view')->with('success', __a('assignment_upload_msg'));
         }
     }
 
@@ -371,6 +387,6 @@ class DashboardController extends Controller
             ->update(['instructor_assignment_file_name' => $fileName, 'status' => 2]);
         } 
         
-        return redirect()->back()->with('success', 'File uploaded successfully');
+        return redirect()->route('list_assignment_view')->with('success', 'File uploaded successfully');
     }
 }

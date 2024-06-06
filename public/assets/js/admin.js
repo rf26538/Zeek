@@ -15,7 +15,7 @@ $(function () {
         $('select.select2').select2();
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var courseSlider = document.getElementById('courseSlider');
         if (courseSlider) {
             new Slick(courseSlider, {
@@ -113,7 +113,6 @@ $(function () {
     /**
      * END: Sidebar Menu
      */
-
 
     function fa_icon_format(icon) {
         var originalOption = icon.element;
