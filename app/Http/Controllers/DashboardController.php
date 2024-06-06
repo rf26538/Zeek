@@ -166,7 +166,7 @@ class DashboardController extends Controller
     public function listAssignmentView(Request $request)
     {
         $user = Auth::user();
-        $assignments = UserAssignment::where('assinged_user_id', $user->id)->get()->toArray();
+        $assignments = UserAssignment::where('user_id', $user->id)->get()->toArray();
         return view(theme('dashboard.assignment_view'), compact('assignments'));
     }
 
@@ -263,6 +263,7 @@ class DashboardController extends Controller
 
     public function registerAssignment(Request $request)
     {
+        
         $rules = [
             'name' => 'required',
             'colgname' => 'required',
@@ -270,41 +271,45 @@ class DashboardController extends Controller
             'crsname' => 'required',
             'desc' => 'required',
             'pagenum' => 'required|numeric',
-            'assignments' => 'required|file',
+            'assignments' => 'required|file', // Check if 'assignments' field is not empty and is a file
         ];
 
         $messages = [
             'name.required' => 'Please enter Title/Name',
-            'colgname.required' => 'Please enter School/Collage Name',
+            'colgname.required' => 'Please enter School/College Name',
             'depname.required' => 'Please enter Department Name',
             'crsname.required' => 'Please enter Course Name',
             'desc.required' => 'Please enter Description',
             'pagenum.required' => 'Please enter Page Number',
-            'pagenum.numric' => 'Page Number should only be numbers.',
+            'pagenum.numeric' => 'Page Number should only be numbers.',
             'assignments.required' => 'Please select a file',
-            'assignments.file' => 'Please upload a valid file.'
+            'assignments.file' => 'Please upload a valid file.',
+            'assignments.mimes' => 'Only PDF and Word files are allowed.',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
+        $validator->sometimes('assignments', 'mimes:pdf,doc,docx', function ($input) {
+            return $input->hasFile('assignments');
+        });
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         if ($request->hasFile('assignments')) {
-            
+
             $file = $request->file('assignments');
             $directory = public_path('uploads/studentsAssignments');
             if (!File::isDirectory($directory)) {
                 File::makeDirectory($directory, 0755, true, true);
             }
-             
-            $fileName = time().'_'.$request->name.'.'.$file->getClientOriginalExtension();
+
+            $fileName = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
             $file->move($directory, $fileName);
 
             $user = Auth::user();
 
-            if($user){
+            if ($user) {
                 $userAssignment = new UserAssignment([
                     'name' => $request->name,
                     'collage_name'  => $request->colgname,
@@ -313,15 +318,13 @@ class DashboardController extends Controller
                     'description'  => $request->desc,
                     'page_number'  => $request->pagenum,
                     'assignment_file_name'  => $fileName,
-                    'instructor_assignment'  => 0,
+                    'is_for_dashboard'  => 0,
                     'is_admin'  => 0
                 ]);
                 $userAssignment->user_id = $user->id;
                 $userAssignment->save();
-                return redirect()->back()->with('success', __a('assignment_upload_msg'));
-            } else {
-                return redirect()->back()->with('error', 'User not authenticated');
             }
+            return redirect()->route('list_assignment_view');
         }
     }
 
