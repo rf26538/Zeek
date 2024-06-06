@@ -4,7 +4,11 @@
 @if(isset($assignments) && count($assignments) > 0)
 <table class="table table-bordered bg-white">
   <tr>
+  @if (Auth::user()->user_type == 'student')
+    <th>My Assignments</th>
+    @else
     <th>Assignment</th>
+    @endif
     <th>Collage Name</th>
     <th>Department</th>
     <th>Course</th>
@@ -18,7 +22,6 @@
     @endif
     @if (Auth::user()->user_type == 'student')
     <th>Price</th>
-    <th>Action</th>
     @endif
   </tr>
 
@@ -33,12 +36,14 @@
     <td><strong>{{$assignment['course_name']}}</td>
     <td>{{ $assignment['description'] }}</td>
     <td>
-      @if ($assignment['status'] == 1)
-        <span class="badge payment-status-success badge-primary">Assigned</span>
+      @if ($assignment['status'] == 0)
+        <span class="badge payment-status-initial badge-secondary">{{ __a('in_progress') }}</span>
+      @elseif ($assignment['status'] == 1)
+        <span class="badge payment-status-success badge-primary">{{ __a('assigned') }}</span>
       @elseif ($assignment['status'] == 2)
-        <span class="badge payment-status-success badge-success">Completed</span>
+        <span class="badge payment-status-success badge-success">{{ __a('completed') }}</span>
       @elseif ($assignment['status'] == 3)
-      <span class="badge payment-status-success badge-success">Paid</span>
+      <span class="badge payment-status-success badge-success">{{ __a('paid') }}</span>
       @endif
     </td>
 
@@ -63,18 +68,16 @@
         @else
         <a href="{{ route('instructor_assignment_edit', $assignment['id'])}}" class="btn btn-primary"> 
             <i class="la la-upload"></i>  
-          </a>
+        </a>
       @endif
     </td>
     @endif
     @if (Auth::user()->user_type == 'student')
     <td>{{ $assignment['amount'] }}</td>
     <td>
-        @if ($assignment['status'] == 0)
-          <input type="hidden" id="assignmentId" value="{{ $assignment['id'] }}">
-          <input type="hidden" id="amount" value="{{ $assignment['amount'] }}">
-          <button type="button" id="doPayment" class="btn btn-primary"><i class="la la-clock-o"></i></button>
-        @else
+        @if ($assignment['status'] == 0 || $assignment['status'] == 1 || $assignment['status'] == 2)
+        <span class="badge payment-status-initial">{{__a('file_status')}}</span>
+        @elseif($assignment['status'] == 3)
           <a type="button" id="downloadAssignment" class="btn btn-info"><i class="la la-clock-o"></i></a>
         @endif
       </td>

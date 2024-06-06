@@ -290,4 +290,13 @@ return [
     'file' => 'File',
     'back_to_assignment' => 'Back to Assignment',
     'instructor' => 'Instructor',
+    'file_status' => 'File not uploaded yet',
+    'in_progress' => 'In-Progress',
+    'assigned' => 'Assigned',
+    'completed' => 'Completed',
+    'paid' => 'Paid',
+    // 'instructor' => 'In-Progress',
+    // 'instructor' => 'Instructor',
+    // 'instructor' => 'In-Progress',
+    // 'instructor' => 'Instructor',
 ];

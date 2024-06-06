@@ -50,16 +50,16 @@
     <td>{{ $assignment['user'] ? $assignment['user']['name'] : ''}}</td>
     <td>{{ $assignment['collage_name'] }}</td>
     <td>{{ $assignment['department_name'] }}</td>
-    <td>{{$assignment['course_name']}}</td>
+    <td>{{ $assignment['course_name']}}</td>
     <td>
       @if ($assignment['status'] == 0)
-        <span class="badge payment-status-initial badge-secondary">In-Progress</span>
+        <span class="badge payment-status-initial badge-secondary">{{ __a('in_progress') }}</span>
       @elseif ($assignment['status'] == 1)
-        <span class="badge payment-status-success badge-primary">Assigned</span>
+        <span class="badge payment-status-success badge-primary">{{ __a('assigned') }}</span>
       @elseif ($assignment['status'] == 2)
-        <span class="badge payment-status-success badge-success">Completed</span>
+        <span class="badge payment-status-success badge-success">{{ __a('completed') }}</span>
       @elseif ($assignment['status'] == 3)
-      <span class="badge payment-status-success badge-success">Paid</span>
+      <span class="badge payment-status-success badge-success">{{ __a('paid') }}</span>
       @endif
     </td>
 
