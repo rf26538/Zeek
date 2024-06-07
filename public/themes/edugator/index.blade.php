@@ -58,24 +58,6 @@
 
 <!--  BANNER SLIDER  -->
 <div class="hero-banner py-3">
-    <!-- <div class="row up">
-            <div class="col-md-12 col-lg-6">
-                <div class="hero-left-wrap">
-                    <h1 class="hero-title mb-4 titleinfo">{{__t('hero_title')}}</h1>
-                    <p class="hero-subtitle  mb-4 titleinfo">
-                        {!! __t('hero_subtitle') !!}
-                    </p>
-                    <a href="{{route('categories')}}" class="btn btn-theme-primary btn-lg">Browse Course</a>
-                </div>
-
-            </div>
-
-            <div class="col-md-12 col-lg-6">
-                <div class="hero-right-wrap" style="max-width: 100%; overflow: hidden;">
-                    <img src="{{theme_url('images/hero-image.png')}}" class="img-fluid fld" />
-                </div>
-            </div>
-        </div> -->
     <div class="fullwidth">
         <div class="col-md-12">
             <ul class="bannerSlider">
@@ -156,8 +138,6 @@
     </script>
 </div>
 @endif
-
-
 
 <!-- ASSIGMENT END-->
 
@@ -304,7 +284,6 @@
 </div>
 @endif
 
-
 @if($new_courses->count())
 <div class="home-section-wrap home-new-courses-wrapper py-5">
     <div class="container">
@@ -313,13 +292,13 @@
                 <div class="section-header-wrap">
                     <h3 class="section-title">{{__t('new_arrival')}}
 
-                        <a href="{{route('courses')}}" class="btn btn-link float-right"><i class="la la-list"></i> {{__t('all_courses')}}</a>
+                    <a href="{{route('courses')}}" class="btn btn-link float-right"><i class="la la-list"></i> {{__t('all_courses')}}</a>
                     </h3>
                     <p class="section-subtitle">{{__t('new_arrival_desc')}}</p>
                 </div>
             </div>
         </div>
-
+        
         <div class="popular-courses-cards-wrap mt-3">
             <div class="row">
                 @foreach($new_courses as $course)
@@ -330,6 +309,61 @@
     </div>
 </div>
 @endif
+
+<div class="home-section-wrap home-new-courses-wrapper py-5">
+@if ($instructors)
+<div class="container">
+    <div class="slider">
+        @foreach ($instructors as $instructor)
+        <div>
+            <div class="card">
+                <div class="position-relative">
+                    <div class="card-img-top">
+                        <img src="{{ asset('icons/pdf.png') }}" alt="Course Image" class="w-100">
+                        <div class="overlay"></div>
+                    </div>
+                    <div class="card-body p-3">
+                        <h5 class="card-title truncate-text">{{ $instructor['name'] }}</h5>
+                        <p class="card-text text-muted truncate-text">Image</p>
+                        <p class="card-text text-muted truncate-text">{{ $instructor['email'] }}</p>
+                        <p class="card-text text-muted truncate-text">{{ $instructor['phone'] }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('.slider').slick({
+                infinite: true,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 3000,
+                dots: true,
+                arrows: true,
+                responsive: [{
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+</div>
+@endif
+</div>
 
 @if($posts->count())
 <div class="home-section-wrap home-blog-section-wrapper py-5">

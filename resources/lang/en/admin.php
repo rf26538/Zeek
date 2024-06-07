@@ -300,4 +300,7 @@ return [
     'upload_ans' => 'View Assignment',
     'ans_sheet' => 'Instructor Assignment',
     'download' => 'Download',
+    'is_for_dashboard' => 'Is For Dashboard',
+    'status_updated_success' => 'Status updated successfully',
+    'instructor_price' => 'Instructor Price',
 ];

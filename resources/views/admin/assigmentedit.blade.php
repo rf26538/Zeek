@@ -36,6 +36,10 @@
         <td>{{ $assignment['amount'] ?? 0 }}</td>
     </tr>
     <tr>
+        <th>{{__a('instructor_price')}}</th>
+        <td>{{ $assignment['instructor_amount'] ?? 0 }}</td>
+    </tr>
+    <tr>
         <th>{{__a('file')}}</th>
         <td><a href="{{ asset('/uploads/studentsAssignments/' . $assignment['assignment_file_name']) }}" id="downloadFile" download>{{ $assignment['assignment_file_name'] }}</a></td>
     </tr>
@@ -68,7 +72,8 @@
             @enderror
         </div>
         <div class="col-md-3">
-            <input type="text" name="amount" class="form-control reg" placeholder="Amount" value="{{ old('amount') ?? $assignment['amount'] }}">
+            <input type="hidden" name="status" class="form-control reg" value="{{ $assignment['status'] }}">
+            <input type="text" name="amount" class="form-control reg" placeholder="Amount" value="{{ old('amount') ?? $assignment['amount'] }}" {{ $assignment['status'] == 3 ? 'readonly' : '' }}>
             @error('amount')
             <div class="text-danger">{{ $message }}</div>
             @enderror

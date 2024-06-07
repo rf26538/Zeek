@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\User;
 use App\Course;
 use App\Post;
 use App\banner;
@@ -21,8 +22,9 @@ class HomeController extends Controller
         $posts = Post::post()->publish()->take(3)->get();
         $banners = banner::all();
         $assignments = UserAssignment::all()->toArray();
+        $instructors = User::where('is_for_dashboard', 1)->get()->toArray();
 
-        return view(theme('index'), compact('title', 'new_courses', 'featured_courses', 'popular_courses', 'posts', 'banners', 'assignments'));
+        return view(theme('index'), compact('title', 'new_courses', 'featured_courses', 'popular_courses', 'posts', 'banners', 'assignments', 'instructors'));
     }
 
     public function courses(Request $r)

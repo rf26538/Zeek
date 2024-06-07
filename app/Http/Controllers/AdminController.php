@@ -288,7 +288,6 @@ class AdminController extends Controller
     }
     public function adminAssignmentUpdate(Request $request)
     {   
-
         $rules = [
             'assinged_user_id' => 'required',
             'is_for_dashboard' => 'integer',
@@ -307,9 +306,19 @@ class AdminController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $status = $request->status == 3 ? 3 : 1;
+
         UserAssignment::where('id', $request->id)
-        ->update(['assinged_user_id' => $request->assinged_user_id, 'amount' => $request->amount, 'is_for_dashboard' => $request->is_for_dashboard, 'status' => 1]);
+        ->update(['assinged_user_id' => $request->assinged_user_id, 'amount' => $request->amount, 'is_for_dashboard' => $request->is_for_dashboard, 'status' => $status]);
     
         return redirect()->route('admin_assignment_view')->with('success', 'Instructor assigned successfully');
+    }
+    public function updateInstructorStatus(Request $request)
+    {   
+        $status = $request->value == true ? 0 : 1;
+        User::where('id', $request->id)
+        ->update(['is_for_dashboard' => $status]);
+    
+        return response()->json(['success'=> __a('status_updated_success')]);
     }
 }

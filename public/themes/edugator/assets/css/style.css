@@ -5,6 +5,68 @@
 ! BANNER SLIDER ! ----------------------*
 *****************************************
 */
+/* TOGGLE START */
+.switch.inst{
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch.inst input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider.inst {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider.inst:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider.inst {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider.inst {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider.inst:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.inst.round {
+    border-radius: 34px;
+  }
+  
+  .slider.inst.round:before {
+    border-radius: 50%;
+  }
+/* TOGGLE END */
+
 
 table td {
     position: relative;
@@ -543,7 +605,6 @@ Home popular courses
     height: auto;
 }
 .course-card .course-card-contents {
-    background-color: #8fbcf0;
     padding: 10px;
     border-radius: 9px;
 }

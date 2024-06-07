@@ -65,13 +65,18 @@
     <input type="hidden" value="{{ $assignment['id'] }}" name="id" />
     <div class="status-update-form-wrap d-flex p-3 bg-light">
 
-        <div class="col-md-9">
+        <div class="col-md-6">
             <input type="file" name="instructorAssignment" class="form-control ">
             @error('instructorAssignment')
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-
+        <div class="col-md-3">
+            <input type="text" name="amount" class="form-control reg" placeholder="Amount" value="{{ old('instructor_amount') ?? $assignment['instructor_amount'] }}">
+            @error('amount')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
         <div class="col-md-3">
             <button type="submit" class="btn btn-info mb-2">{{__a('update_status')}}</button>
         </div>

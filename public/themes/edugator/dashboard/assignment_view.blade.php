@@ -20,7 +20,6 @@
     @if (Auth::user()->user_type == 'admin')
     <th>Amount</th>
     @endif
-    <th>Action</th>
   </tr>
 
   @php

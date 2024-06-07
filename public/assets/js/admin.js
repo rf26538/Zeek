@@ -30,11 +30,6 @@ $(function () {
 
     //Show file Name on select
 
-    // $('#inputGroupFile').on('change', function(){
-    //     var fileName = $(this).val().split('\\').pop();
-    //     $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    // });
-
     // $('#inputGroupFile').on('change', function () {
     //     var files = $(this)[0].files;
     //     $('#filePreview').empty(); // Clear previous previews
@@ -82,6 +77,25 @@ $(function () {
     // Remove file preview when remove button is clicked
     $(document).on('click', '.remove-btn', function () {
         $(this).parent('.preview-container').remove();
+    });
+
+    $(document).on('change', '#changeInstructorDashboardStatus', function () {
+        let id = $(this).attr('data-id');
+        let value = $(this).is(':checked');
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        console.log({id, value});
+
+        $.ajax({
+            url: pageData.routes.update_instructor_status,
+            type: "POST",
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: {id, value},
+            success: function (data) {
+                
+            }
+        });
     });
 
     /**

@@ -58,7 +58,7 @@
       <span class="badge payment-status-success badge-primary">{{ __a('assigned') }}</span>
       @elseif ($assignment['status'] == 2)
       <span class="badge payment-status-success badge-success">{{ __a('completed') }}</span>
-      @elseif ($assignment['status'] == 3)
+      @elseif ($assignment['status'] == 3 || $assignment['status'] == 4)
       <span class="badge payment-status-success badge-success">{{ __a('paid') }}</span>
       @endif
     </td>
