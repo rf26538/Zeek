@@ -303,4 +303,5 @@ return [
     'is_for_dashboard' => 'Is For Dashboard',
     'status_updated_success' => 'Status updated successfully',
     'instructor_price' => 'Instructor Price',
+    'dashboard_assignment' => 'Dashboard Assignment',
 ];

@@ -116,6 +116,7 @@
 <script src="{{theme_asset('js/main.js')}}"></script>
 <script src="{{theme_asset('js/razor.js')}}"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 
 </body>
 </html>

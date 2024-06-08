@@ -1,60 +1,5 @@
 @extends('layouts.theme')
 @section('content')
-<style>
-    .course-card-img-wrap {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .pdf-preview {
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.9);
-        /* Background color for the preview */
-    }
-
-    .course-card-img-wrap:hover .pdf-preview {
-        display: block;
-    }
-
-    .course-card-img-wrap:hover .course-image {
-        visibility: hidden;
-        /* Hide the original image on hover */
-    }
-
-    .truncate-text {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        max-width: 100%;
-        display: block;
-    }
-
-    .truncate-text:hover {
-        white-space: normal;
-        word-wrap: break-word;
-    }
-
-    .slick-slide img {
-        /* max-height: 200px; */
-        margin: auto;
-        max-width: 100%;
-    }
-
-    .slick-next:before,
-    .slick-prev:before {
-        color: black;
-    }
-
-    /* the slides */
-    .slick-slide {
-        margin: 0 27px;
-    }
-</style>
 
 <!--  BANNER SLIDER  -->
 <div class="hero-banner py-3">
@@ -76,67 +21,34 @@
 </div>
 
 <!-- ASSIGMENT -->
-
 @if ($assignments)
-<div class="container mt-4">
-    <div class="section-header-wrap">
-        <h3 class="section-title">
-            Assignments
-        </h3>
-    </div>
-    <div class="slider">
+<div class="container mt-5">
+        <div class="project-slider">
         @foreach ($assignments as $assignment)
-        @if ($assignment['is_admin'] == 1)
-        <div>
+            @if ($assignment['is_admin'] == 1)
             <div class="card">
-                <a href="{{ route('assignment_register_view') }}" class="text-decoration-none">
-                    <div class="position-relative">
-                        <div class="card-img-top">
-                            <img src="{{ asset('icons/pdf.png') }}" alt="Course Image" class="w-100">
-                            <div class="overlay"></div>
-                        </div>
-                        <div class="card-body p-3">
-                            <h5 class="card-title truncate-text">{{ $assignment['course_name'] }}</h5>
-                            <p class="card-text text-muted truncate-text">{{ $assignment['instructor_assignment_file_name'] }}</p>
-                            <p class="card-text text-muted truncate-text">{{ $assignment['department_name'] }}</p>
-                            <p class="card-text text-muted truncate-text">{{ $assignment['page_number'] }} pages</p>
+                <div class="row no-gutters">
+                    <div class="col-auto">
+                        <a href="{{ route('dashbord_assignment_view', ['id' => $assignment['id']]) }}" class="text-decoration-none">
+                            <img src="{{ asset('icons/pdf.png') }}" class="card-img-left" alt="Project Image">
+                        </a>
+                    </div>
+                    <div class="col">
+                        <div class="card-body">
+                            <a href="{{ route('assignment_register_view') }}" class="text-decoration-none lead">
+                                <i class="la la-plus-square lead"></i>
+                            </a>
+                            <h5 class="lead">project3</h5>
+                            <p class="card-text">IT 203<br>Saudi Electronic University</p>
+                            <p class="card-text"><span class="badge badge-secondary">OTHER</span> 90 views</p>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
-        </div>
-        @endif
+            @endif
         @endforeach
+        </div>
     </div>
-    <script>
-        $(document).ready(function() {
-            $('.slider').slick({
-                infinite: true,
-                slidesToShow: 4,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 3000,
-                dots: true,
-                arrows: true,
-                responsive: [{
-                        breakpoint: 992,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 1
-                        }
-                    },
-                    {
-                        breakpoint: 768,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1
-                        }
-                    }
-                ]
-            });
-        });
-    </script>
-</div>
 @endif
 
 <!-- ASSIGMENT END-->
@@ -310,60 +222,35 @@
 </div>
 @endif
 
-<div class="home-section-wrap home-new-courses-wrapper py-5">
-@if ($instructors)
-<div class="container">
-    <div class="slider">
+@if ($assignments)
+<div class="container mt-5">
+        <div class="project-slider">
         @foreach ($instructors as $instructor)
-        <div>
             <div class="card">
-                <div class="position-relative">
-                    <div class="card-img-top">
-                        <img src="{{ asset('icons/pdf.png') }}" alt="Course Image" class="w-100">
-                        <div class="overlay"></div>
-                    </div>
-                    <div class="card-body p-3">
-                        <h5 class="card-title truncate-text">{{ $instructor['name'] }}</h5>
-                        <p class="card-text text-muted truncate-text">Image</p>
-                        <p class="card-text text-muted truncate-text">{{ $instructor['email'] }}</p>
-                        <p class="card-text text-muted truncate-text">{{ $instructor['phone'] }}</p>
+                <div class="row no-gutters">
+                <div class="user-card">
+                        <img src="{{ asset('icons/pdf.png') }}" class="user-img" alt="Project Image">
+                        <div class="card-body">
+                            <h6 class="lead"><b>{{ $instructor['name'] }}</b></h6>
+                            <p class="card-text text-muted truncate-text">{{ $instructor['email'] }}</p>
+                            <p class="card-text text-muted truncate-text">{{ $instructor['job_title'] }}
+                                @if (!empty($instructor['job_title']))
+                                <button class="btn btn-link" onclick="toggleContent(this)"><i>See More</i></button>
+                                @endif
+                        </p>
+                            <p class="card-text text-muted truncate-text content"><i>{{ $instructor['about_me'] }}</i>
+                            @if (!empty($instructor['about_me']))
+                            <button class="btn btn-link" onclick="toggleContent(this)"><i>See More</i></button>
+                            @endif
+                        </p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         @endforeach
+        </div>
     </div>
-    <script>
-        $(document).ready(function() {
-            $('.slider').slick({
-                infinite: true,
-                slidesToShow: 4,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 3000,
-                dots: true,
-                arrows: true,
-                responsive: [{
-                        breakpoint: 992,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 1
-                        }
-                    },
-                    {
-                        breakpoint: 768,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1
-                        }
-                    }
-                ]
-            });
-        });
-    </script>
-</div>
 @endif
-</div>
 
 @if($posts->count())
 <div class="home-section-wrap home-blog-section-wrapper py-5">
@@ -502,5 +389,17 @@
     </div>
 
 </div>
+
+<script>
+    function toggleContent(button) {
+        var content = button.previousElementSibling;
+        content.classList.toggle('expanded');
+        if (content.classList.contains('expanded')) {
+            button.textContent = 'See Less';
+        } else {
+            button.textContent = 'See More';
+        }
+    }
+</script>
 
 @endsection

@@ -8,6 +8,44 @@
 
 @import "font-face.css";
 
+
+.cardBanner {
+    position: relative; /* Add this line to make the container relative */
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .cardBanner:hover {
+    transform: translateY(-5px);
+  }
+
+  .cardBanner img {
+    width: 100%; /* Adjusted width */
+    height: 114px; /* Adjusted height */
+    object-fit: cover; /* Ensure the image covers the entire container */
+    border-radius: 5px 5px 0 0;
+  }
+
+  .btn-delete {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .btn-delete:hover {
+    background-color: #c82333;
+  }
+
 .card-img-top-i {
     width: 147%;
     border-radius: 6px

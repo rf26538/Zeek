@@ -1,10 +1,94 @@
 @import url(../../../../assets/css/font-face.css);
 
+.user-card {
+    text-align: center;
+    padding: 20px; /* Added padding for better spacing */
+  }
+
+  .user-img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 0 auto 20px;
+  }
+
+.content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+}
+.expanded {
+    overflow: visible;
+    white-space: normal;
+    -webkit-line-clamp: initial;
+}
+
+.card {
+    width: 300px; /* Adjust card width as needed */
+    margin: 10px; /* Add some margin for spacing */
+    border-radius: 10px; /* Rounded corners for the card */
+    overflow: hidden; /* Ensure child elements stay within rounded corners */
+}
+.card-img-left {
+    height: 100%;
+    width: 100px; /* Adjust the image width */
+    object-fit: cover;
+    border-top-left-radius: 10px; /* Rounded corners for the top left */
+    border-bottom-left-radius: 10px; /* Rounded corners for the bottom left */
+}
+.slick-prev:before, .slick-next:before {
+    color: black;
+}
+.slick-slide {
+    display: flex;
+    justify-content: center; /* Center the cards */
+}
 /*
 *****************************************
 ! BANNER SLIDER ! ----------------------*
 *****************************************
 */
+.rounded-circle {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 150px; /* Adjust the width and height as needed */
+    height: 150px; /* Adjust the width and height as needed */
+}
+
+
+.wrapper {
+    padding: 100px;
+  }
+  
+  .image--cover {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 20px;
+  
+    object-fit: cover;
+    object-position: center right;
+  }
+/* IFRAME START */
+
+.iframe-container {
+    position: relative;
+    overflow: hidden;
+    width: 90%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+}
+.iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80%;
+    border: none;
+}
+/* IFRAME END */
 /* TOGGLE START */
 .switch.inst{
     position: relative;

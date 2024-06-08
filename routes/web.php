@@ -253,6 +253,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('admin_assignment_edit/{id}', 'AdminController@editAssigment')->name('admin_assignment_edit');
     Route::post('update_instructor_status', 'AdminController@updateInstructorStatus')->name('update_instructor_status');
     Route::get('assignment_edit/{id}', 'DashboardController@editAssigment')->name('assignment_edit');
+    Route::get('dashbord_assignment_view/{id}', 'DashboardController@dashboardAssigmentView')->name('dashbord_assignment_view');
     Route::post('/payment/callback', 'RazorPaymentController@handleCallback');
     
     Route::group(['prefix' => 'purchases'], function () {
@@ -325,6 +326,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('storage', 'SettingsController@StorageSettings')->name('storage_settings');
         Route::get('banner_settings', 'SettingsController@bannerSetting')->name('banner_settings');
         Route::post('upload_banners', 'SettingsController@uploadBanner')->name('upload_banners');
+        Route::post('delete_banners', 'SettingsController@deleteBanner')->name('delete_banners');
     });
 
     Route::get('gateways', 'PaymentController@PaymentGateways')->name('payment_gateways');

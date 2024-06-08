@@ -113,6 +113,18 @@ class SettingsController extends Controller
         return view('admin.settings.banner_settings', compact('title', 'files'));
     }
 
+    public function deleteBanner(Request $request){
+        $banner = banner::find($request->id);
+
+        if (!$banner) {
+            return response()->json(['error' => 'Banner not found.'], 404);
+        }
+
+        $banner->delete();
+
+        return response()->json(['success' => 'Banner deleted successfully.']);
+    }
+
     public function uploadBanner(Request $request)
     {
         if ($request->file('banner_file')) {

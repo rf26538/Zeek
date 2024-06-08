@@ -98,6 +98,34 @@ $(function () {
         });
     });
 
+    $(document).on('click', '#deleteBanneImage', function () {
+        var itemId = $(this).data('id');
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url: pageData.routes.delete_banners,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: {id: itemId},
+            success: function(response){
+                $('#bannnerImg-'+itemId).remove();
+                var message = $('<div class="alert alert-success" role="alert">' + response.success + '</div>');
+                $('.container').prepend(message);
+                setTimeout(function() {
+                    message.fadeOut('slow', function() {
+                        $(this).remove();
+                    });
+                }, 3000);
+            },
+            error: function(xhr, status, error){
+                console.error(xhr.responseText);
+                alert('An error occurred while deleting the item.');
+            }
+        });
+    });
+    
+
     /**
      * Admin Sidebar Menu
      */
