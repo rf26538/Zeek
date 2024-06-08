@@ -72,13 +72,7 @@
             @enderror
         </div>
         <div class="col-md-3">
-            <input type="text" name="amount" class="form-control reg" placeholder="Amount" value="{{ old('instructor_amount') ?? $assignment['instructor_amount'] }}">
-            @error('amount')
-            <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-info mb-2">{{__a('update_status')}}</button>
+            <button type="submit" class="btn btn-info mb-2">{{__a('upload')}}</button>
         </div>
     </div>
 </form>

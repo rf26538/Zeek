@@ -359,16 +359,13 @@ class DashboardController extends Controller
     public function submitInstructorAssigment(Request $request)
     {
         $rules = [
-            'instructorAssignment' => 'required|file',
-            'amount' => 'required|integer', 
+            'instructorAssignment' => 'required|file'
         ];
         
         $messages = [
             'instructorAssignment.required' => 'Please select a file',
             'instructorAssignment.file' => 'Please upload a valid file.',
-            'instructorAssignment.mimes' => 'Only PDF and Word files are allowed.',
-            'amount.required' => 'Please enter an amount',
-            'amount.integer' => 'The amount must be an integer',
+            'instructorAssignment.mimes' => 'Only PDF and Word files are allowed.'
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -393,7 +390,7 @@ class DashboardController extends Controller
             $file->move($directory, $fileName);
 
             UserAssignment::where('id', $request->id)
-            ->update(['instructor_assignment_file_name' => $fileName, 'status' => 2, 'instructor_amount' => $request->amount]);
+            ->update(['instructor_assignment_file_name' => $fileName, 'status' => 2]);
         } 
         
         return redirect()->route('list_assignment_view')->with('success', 'File uploaded successfully');

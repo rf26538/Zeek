@@ -26,7 +26,7 @@
         <div class="project-slider">
         @foreach ($assignments as $assignment)
             @if ($assignment['is_admin'] == 1)
-            <div class="card">
+            <div class="card cardSlider">
                 <div class="row no-gutters">
                     <div class="col-auto">
                         <a href="{{ route('dashbord_assignment_view', ['id' => $assignment['id']]) }}" class="text-decoration-none">
@@ -222,27 +222,19 @@
 </div>
 @endif
 
-@if ($assignments)
+@if ($instructors)
 <div class="container mt-5">
         <div class="project-slider">
         @foreach ($instructors as $instructor)
-            <div class="card">
+            <div class="card cardSlider">
                 <div class="row no-gutters">
                 <div class="user-card">
                         <img src="{{ asset('icons/pdf.png') }}" class="user-img" alt="Project Image">
                         <div class="card-body">
                             <h6 class="lead"><b>{{ $instructor['name'] }}</b></h6>
                             <p class="card-text text-muted truncate-text">{{ $instructor['email'] }}</p>
-                            <p class="card-text text-muted truncate-text">{{ $instructor['job_title'] }}
-                                @if (!empty($instructor['job_title']))
-                                <button class="btn btn-link" onclick="toggleContent(this)"><i>See More</i></button>
-                                @endif
-                        </p>
-                            <p class="card-text text-muted truncate-text content"><i>{{ $instructor['about_me'] }}</i>
-                            @if (!empty($instructor['about_me']))
-                            <button class="btn btn-link" onclick="toggleContent(this)"><i>See More</i></button>
-                            @endif
-                        </p>
+                            <p class="card-text text-muted truncate-text">{{ $instructor['job_title'] }} </p>
+                            <p class="card-text text-muted truncate-text content"><i>{{ $instructor['about_me'] }}</i></p>
                         </div>
                     </div>
                 </div>

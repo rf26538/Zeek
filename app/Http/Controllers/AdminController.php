@@ -287,17 +287,18 @@ class AdminController extends Controller
         }
     }
     public function adminAssignmentUpdate(Request $request)
-    {   
+    {  
+        
         $rules = [
-            'assinged_user_id' => 'required',
             'is_for_dashboard' => 'integer',
-            'amount' => 'required|integer', 
+            'amount' => 'integer',
+            'instamount' => 'integer',
         ];
         
         $messages = [
-            'assinged_user_id.required' => 'Please select an instructor',
             'amount.required' => 'Please enter an amount',
             'amount.integer' => 'The amount must be an integer',
+            'instamount.integer' => 'The amount must be an integer',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -306,10 +307,18 @@ class AdminController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $status = $request->status == 3 ? 3 : 1;
+        $updateArr = [
+            'amount' => $request->amount, 
+            'is_for_dashboard' => $request->is_for_dashboard, 
+            'instructor_amount' => $request->instamount,
+            'status' => 1
+        ];
 
-        UserAssignment::where('id', $request->id)
-        ->update(['assinged_user_id' => $request->assinged_user_id, 'amount' => $request->amount, 'is_for_dashboard' => $request->is_for_dashboard, 'status' => $status]);
+        if ($request->has('assinged_user_id')) {
+            $updateArr['assinged_user_id'] = $request->assinged_user_id;
+        }
+    
+        UserAssignment::where('id', $request->id)->update($updateArr);
     
         return redirect()->route('admin_assignment_view')->with('success', 'Instructor assigned successfully');
     }

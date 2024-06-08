@@ -26,7 +26,7 @@
     -webkit-line-clamp: initial;
 }
 
-.card {
+.card.cardSlider{
     width: 300px; /* Adjust card width as needed */
     margin: 10px; /* Add some margin for spacing */
     border-radius: 10px; /* Rounded corners for the card */
