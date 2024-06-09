@@ -1,9 +1,9 @@
 @extends('layouts.theme')
 @section('content')
 
-<div class="container-fluid mb-6">
-    <div class="row">
-        <div class="col-md-6">
+<div class="container-fluid mb-10">
+    <!-- <div class="row"> -->
+        <!-- <div class="col-md-6">
             <table class="table table-striped table-bordered">
                 <tr>
                     <th>{{__a('assignment_title')}}</th>
@@ -35,15 +35,14 @@
                 </tr>
 
             </table>
-        </div>
+        </div> -->
         
-        <div class="col-md-6">
+        <div class="col-md-12 justify-content-center">
             <div class="iframe-container">
-            <iframe src="{{ asset('uploads/InstructorAssignment/t.pdf')}}"  width="70%" height="800" style="border: none;" allowFullScreen></iframe>
-
+                <iframe src="{{ asset('uploads/InstructorAssignment/t.pdf')}}"  width="70%" height="800" style="border: none;" allowFullScreen></iframe>
             </div>
         </div>
-    </div>
+    <!-- </div> -->
 </div>
 
 

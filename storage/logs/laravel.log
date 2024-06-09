@@ -1,0 +1,8 @@
+[2024-06-09 19:35:21] local.ERROR: Cannot use [] for reading {"userId":5,"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use [] for reading at C:\\xampp\\htdocs\\zeekhub.com\\storage\\framework\\views\\200511068b791e6374841804165ec935.php:29)
+[stacktrace]
+#0 {main}
+"} 
+[2024-06-09 19:35:45] local.ERROR: Cannot use [] for reading {"userId":5,"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot use [] for reading at C:\\xampp\\htdocs\\zeekhub.com\\storage\\framework\\views\\200511068b791e6374841804165ec935.php:29)
+[stacktrace]
+#0 {main}
+"} 
