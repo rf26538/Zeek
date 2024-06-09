@@ -32,7 +32,7 @@ class UserAssignment extends Model
         'instructor_assignment_file_name',
         'is_for_dashboard',
         'is_admin',
-        'assinged_user_id',
+        'assigned_user_id',
         'instructor_amount' // Corrected field name
     ];
 

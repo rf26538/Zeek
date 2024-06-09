@@ -163,18 +163,44 @@ class DashboardController extends Controller
         return view(theme('dashboard.purchase_view'), compact('title', 'payment'));
     }
 
-    public function listAssignmentView(Request $request)
-    {
+    public function listAssignmentView(Request $request) {
         $user = Auth::user();
-        $condition = ['user_id' => $user->id];
 
-        if($user->user_type == 'instructor') { 
-            $condition = ['assinged_user_id'=> $user->id];
+        if ($request->has(['q', 'status'])) {
+            $query = $request->input('q');
+            $status = $request->input('status');
+            
+            if (!empty($query) && $status == 'all') {
+                $res = UserAssignment::where('name', 'like', '%' . $query . '%')
+                ->orWhere('collage_name', 'like', '%' . $query . '%')
+                ->orWhere('assignment_file_name', 'like', '%' . $query . '%');
+                $assignments = $res->paginate(10);
+    
+            } elseif (empty($query) && $status != 'all') {
+                $res = UserAssignment::where('status', $status);
+                $assignments = $res->paginate(10);
+    
+            } elseif (!empty($query) && $status != 'all') {
+                $res = UserAssignment::where('name', 'like', '%' . $query . '%')
+                ->orWhere('collage_name', 'like', '%' . $query . '%')
+                ->orWhere('assignment_file_name', 'like', '%' . $query . '%')
+                ->orWhere('status', $status);
+                $assignments = $res->paginate(10);
+            }      
+        } else {
+            $query = '';
+            $status = 'all';
+            $condition = ['user_id' => $user->id];
+            if ($user->user_type == 'instructor') { 
+                $condition = ['assinged_user_id' => $user->id];
+            }
+            
+            $res = UserAssignment::where($condition);
+            $assignments = $res->paginate(10);
         }
-
-        $assignments = UserAssignment::where($condition)->get()->toArray();
-        return view(theme('dashboard.assignment_view'), compact('assignments'));
+        return view(theme('dashboard.assignment_view'), compact('assignments', 'query', 'status'));
     }
+
 
     public function editAssigment($id)
     {

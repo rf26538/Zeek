@@ -97,33 +97,6 @@ $(function () {
             }
         });
     });
-
-    $(document).on('click', '#deleteBanneImage', function () {
-        var itemId = $(this).data('id');
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-        $.ajax({
-            url: pageData.routes.delete_banners,
-            type: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            },
-            data: {id: itemId},
-            success: function(response){
-                $('#bannnerImg-'+itemId).remove();
-                var message = $('<div class="alert alert-success" role="alert">' + response.success + '</div>');
-                $('.container').prepend(message);
-                setTimeout(function() {
-                    message.fadeOut('slow', function() {
-                        $(this).remove();
-                    });
-                }, 3000);
-            },
-            error: function(xhr, status, error){
-                console.error(xhr.responseText);
-                alert('An error occurred while deleting the item.');
-            }
-        });
-    });
     
 
     /**
@@ -234,5 +207,81 @@ $(function () {
         $('input.check_bulk_item:checkbox').not(this).prop('checked', this.checked);
     });
 
+});
 
+document.addEventListener('DOMContentLoaded', function () {
+    const images = document.querySelectorAll('.img-preview');
+    const modal = document.getElementById('imagePreviewModal');
+    const modalImg = document.getElementById('previewImage');
+    const prevBtn = document.getElementById('prevImage');
+    const nextBtn = document.getElementById('nextImage');
+
+    let currentIndex = 0;
+
+    function showImage(index) {
+        modalImg.src = images[index].src;
+        currentIndex = index;
+    }
+
+    images.forEach((image, index) => {
+        image.addEventListener('click', function () {
+            showImage(index);
+            $(modal).modal('show');
+        });
+    });
+
+    prevBtn.addEventListener('click', function () {
+        if (currentIndex > 0) {
+            showImage(currentIndex - 1);
+        }
+    });
+
+    nextBtn.addEventListener('click', function () {
+        if (currentIndex < images.length - 1) {
+            showImage(currentIndex + 1);
+        }
+    });
+
+    const deleteButtons = document.querySelectorAll('.btn-delete');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.stopPropagation(); // Prevent the click event from reaching the image
+            const cardBanner = this.closest('.cardBanner');
+            cardBanner.remove(); // Remove the image container
+            var itemId = $(this).data('id');
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: pageData.routes.delete_banners,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                data: {id: itemId},
+                success: function(response){
+                    $('#bannnerImg-'+itemId).remove();
+                    var message = $('<div class="alert alert-success" role="alert">' + response.success + '</div>');
+                    $('.container').prepend(message);
+                    setTimeout(function() {
+                        message.fadeOut('slow', function() {
+                            $(this).remove();
+                        });
+                    }, 3000);
+                },
+                error: function(xhr, status, error){
+                    console.error(xhr.responseText);
+                    alert('An error occurred while deleting the item.');
+                }
+            });
+        });
+    });
+});
+document.addEventListener('DOMContentLoaded', function () {
+    const inputGroupFile = document.getElementById('inputGroupFile');
+    const fileLabel = document.getElementById('numfiles');
+
+    inputGroupFile.addEventListener('change', function () {
+        const files = Array.from(inputGroupFile.files);
+        const fileNames = files.map(file => file.name).join(', ');
+        fileLabel.textContent = fileNames || 'Choose file';
+    });
 });

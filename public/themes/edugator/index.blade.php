@@ -23,32 +23,39 @@
 <!-- ASSIGMENT -->
 @if ($assignments)
 <div class="container mt-5">
-        <div class="project-slider">
+    <div class="section-header-wrap">
+        <h3 class="section-title">
+            Assignment
+            <a href="{{ route('assignment_register_view') }}" class="btn btn-primary float-right"><i class="la la-plus-square"></i> Submit </a>
+        </h3>
+        <p class="section-subtitle">Prepare a professional presentation with our instructors</p>
+    </div>
+    <div class="project-slider ">
         @foreach ($assignments as $assignment)
-            @if ($assignment['is_admin'] == 1)
+        @if ($assignment['is_admin'] == 1)
+        <a href="{{ route('dashbord_assignment_view', ['id' => $assignment['id']]) }}" class="text-decoration-none">
             <div class="card cardSlider">
                 <div class="row no-gutters">
                     <div class="col-auto">
-                        <a href="{{ route('dashbord_assignment_view', ['id' => $assignment['id']]) }}" class="text-decoration-none">
-                            <img src="{{ asset('icons/pdf.png') }}" class="card-img-left" alt="Project Image">
-                        </a>
+                        <img src="{{ asset('icons/pdf.png') }}" class="card-img-left" alt="Project Image">
                     </div>
-                    <div class="col">
+                    <div class="col fixed-height-row">
                         <div class="card-body">
-                            <a href="{{ route('assignment_register_view') }}" class="text-decoration-none lead">
-                                <i class="la la-plus-square lead"></i>
-                            </a>
-                            <h5 class="lead">project3</h5>
-                            <p class="card-text">IT 203<br>Saudi Electronic University</p>
-                            <p class="card-text"><span class="badge badge-secondary">OTHER</span> 90 views</p>
+                            <h5 class="lead text-user">project3 nbsnbdasc cas</h5>
+                            <p class="card-text text-user">IT 203<br>Saudi Electronic University </p>
+                            <!-- <h5 class="lead text-user">{{$assignment['assignment_file_name']}}</h5>
+                            <p class="card-text text-user">{{$assignment['course_name']}}<br>{{$assignment['collage_name']}}</p> -->
+                            <p class="card-text text-user"><span class="badge badge-secondary">Assignment</span></p>
+
                         </div>
                     </div>
                 </div>
-            </div>
-            @endif
-        @endforeach
-        </div>
+        </a>
     </div>
+    @endif
+    @endforeach
+</div>
+</div>
 @endif
 
 <!-- ASSIGMENT END-->
@@ -204,13 +211,13 @@
                 <div class="section-header-wrap">
                     <h3 class="section-title">{{__t('new_arrival')}}
 
-                    <a href="{{route('courses')}}" class="btn btn-link float-right"><i class="la la-list"></i> {{__t('all_courses')}}</a>
+                        <a href="{{route('courses')}}" class="btn btn-link float-right"><i class="la la-list"></i> {{__t('all_courses')}}</a>
                     </h3>
                     <p class="section-subtitle">{{__t('new_arrival_desc')}}</p>
                 </div>
             </div>
         </div>
-        
+
         <div class="popular-courses-cards-wrap mt-3">
             <div class="row">
                 @foreach($new_courses as $course)
@@ -223,25 +230,34 @@
 @endif
 
 @if ($instructors)
-<div class="container mt-5">
+<div class="home-section-wrap home-blog-section-wrapper py-5">
+    <div class="container mt-2">
+        <div class="section-header-wrap">
+            <h3 class="section-title">
+                Instructors
+                <span class="btn btn-link float-right"><i class="la la-bolt"></i> All instructors </span>
+            </h3>
+            <p class="section-subtitle">Know our instructors</p>
+        </div>
         <div class="project-slider">
-        @foreach ($instructors as $instructor)
+            @foreach ($instructors as $instructor)
             <div class="card cardSlider">
                 <div class="row no-gutters">
-                <div class="user-card">
+                    <div class="user-card">
                         <img src="{{ asset('icons/pdf.png') }}" class="user-img" alt="Project Image">
                         <div class="card-body">
                             <h6 class="lead"><b>{{ $instructor['name'] }}</b></h6>
                             <p class="card-text text-muted truncate-text">{{ $instructor['email'] }}</p>
-                            <p class="card-text text-muted truncate-text">{{ $instructor['job_title'] }} </p>
-                            <p class="card-text text-muted truncate-text content"><i>{{ $instructor['about_me'] }}</i></p>
+                            <p class="card-text text-muted truncate-text content"><span>{{ $instructor['job_title']}}</span>{{ $instructor['about_me']}}</p>
+                            <button class="btn btn-link" onclick="toggleContent(this)"><i>See More</i></button>
                         </div>
                     </div>
                 </div>
             </div>
-        @endforeach
+            @endforeach
         </div>
     </div>
+</div>
 @endif
 
 @if($posts->count())

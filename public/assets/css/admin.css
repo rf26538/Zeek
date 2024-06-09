@@ -10,54 +10,64 @@
 
 
 .cardBanner {
-    position: relative; /* Add this line to make the container relative */
-    border: none;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-  }
+    position: relative;
+}
 
-  .cardBanner:hover {
-    transform: translateY(-5px);
-  }
+.cardBanner img {
+    width: 100%;
+    height: 60%;
+    cursor: pointer;
+}
 
-  .cardBanner img {
-    width: 100%; /* Adjusted width */
-    height: 114px; /* Adjusted height */
-    object-fit: cover; /* Ensure the image covers the entire container */
-    border-radius: 5px 5px 0 0;
-  }
-
-  .btn-delete {
+.btn-delete {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: #dc3545;
+    top: -10px;
+    right: 10px;
+    background-color: red;
+    color: white;
     border: none;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    font-size: 14px;
-    color: white;
+    width: 25px;
+    height: 25px;
+    font-size: 18px;
+    line-height: 18px;
+    text-align: center;
     cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-  }
-
-  .btn-delete:hover {
-    background-color: #c82333;
-  }
-
-.card-img-top-i {
-    width: 147%;
-    border-radius: 6px
 }
 
-.img-thumbnail-prev {
-    padding: .25rem;
-    background-color: #fff;
-    border-radius: 1.25rem;
-    max-width: 108%;
-    height: auto;
+.btn-delete:hover {
+    background-color: darkred;
 }
+
+.modal-body {
+    position: relative;
+}
+
+.btn-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+#prevImage {
+    left: 0;
+}
+
+#nextImage {
+    right: 0;
+}
+
+.btn-nav:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+
 
 .block1 {
     display: inline-block;

@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-
 @section('page-header-right')
 
-<a href="{{route('withdraws')}}" class="btn btn-dark ml-2"> <i class="la la-clock-o"></i> Pending</a>
-<a href="{{route('withdraws', ['status' => 'success'])}}" class="btn btn-success ml-2"> <i class="la la-check-circle"></i> Success</a>
-<a href="{{route('withdraws', ['status' => 'rejected'])}}" class="btn btn-warning ml-2"> <i class="la la-exclamation-circle"></i> Rejected</a>
-<a href="{{route('withdraws', ['status' => 'all'])}}" class="btn btn-light ml-2"> <i class="la la-th-list"></i> All</a>
+    <a href="{{route('admin_courses', ['filter_by' => 'popular'])}}" class="ml-4"> <i class="la la-bolt"></i> {{__a('popular_courses')}}  </a>
+    <a href="{{route('admin_courses', ['filter_by' => 'featured'])}}" class="ml-4"> <i class="la la-bookmark"></i> {{__a('featured_courses')}}  </a>
 
+    @if(count(request()->input()))
+        <a href="{{route('admin_courses')}}" class="ml-4"> <i class="la la-arrow-circle-left"></i> {{__a('reset_filter')}}  </a>
+    @endif
 @endsection
 
 @section('content')
@@ -56,10 +56,10 @@
       <span class="badge payment-status-initial badge-secondary">{{ __a('in_progress') }}</span>
       @elseif ($assignment['status'] == 1)
       <span class="badge payment-status-success badge-primary">{{ __a('assigned') }}</span>
-      @elseif ($assignment['status'] == 2)
-      <span class="badge payment-status-success badge-success">{{ __a('completed') }}</span>
-      @elseif ($assignment['status'] == 3 || $assignment['status'] == 4)
+      @elseif ($assignment['instructor_assignment_file_name'] && $assignment['status'] == 2)
       <span class="badge payment-status-success badge-success">{{ __a('paid') }}</span>
+      @elseif ($assignment['instructor_assignment_file_name'] && $assignment['status'] == 3)
+      <a href="{{ asset('/uploads/InstructorAssignment/' . $assignment['instructor_assignment_file_name']) }}" download>{{ $assignment['instructor_assignment_file_name'] }}</a>
       @endif
     </td>
 
