@@ -26,8 +26,12 @@
     <div class="section-header-wrap">
         <h3 class="section-title">
             Assignment
-            @if (Auth::user()->user_type == 'student' || Auth::user()->user_type == 'admin')
-                <a href="{{ route('assignment_register_view') }}" class="btn btn-primary float-right"><i class="la la-plus-square"></i> Submit </a>
+            @if (Auth::check())
+                @if (Auth::user()->user_type == 'student' || Auth::user()->user_type == 'admin')
+                    <a href="{{ route('assignment_register_view') }}" class="btn btn-primary float-right"><i class="la la-plus-square"></i> Submit </a>
+                @endif
+            @else
+            <a href="{{ route('assignment_register_view') }}" class="btn btn-primary float-right"><i class="la la-plus-square"></i> Submit </a>
             @endif
         </h3>
         <p class="section-subtitle">Prepare a professional presentation with our instructors</p>
