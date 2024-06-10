@@ -250,7 +250,7 @@
             <div class="card cardSlider">
                 <div class="row no-gutters">
                     <div class="user-card">
-                        <img src="{{ asset('icons/pdf.png') }}" class="user-img" alt="Project Image">
+                        <img src="{{ asset('icons/man2.png') }}" class="user-img" alt="Project Image">
                         <div class="card-body">
                             <h6 class="lead"><b>{{ $instructor['name'] }}</b></h6>
                             <p class="card-text text-muted truncate-text">{{ $instructor['email'] }}</p>
