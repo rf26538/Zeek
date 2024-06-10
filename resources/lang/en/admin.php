@@ -73,7 +73,6 @@ return [
     'select_icon' => 'Select Icon',
     'category_edit' => 'Category Edit',
     'category_updated' => 'Category has been updated',
-
     'print' => 'Print',
     'invoice_settings' => 'Invoice Settings',
     'company_name' => 'Company Name',
@@ -84,7 +83,6 @@ return [
     'footer_text' => 'Footer Text',
     'settings' => 'Settings',
     'site_url' => 'Site URL',
-
     'success' => 'Success',
     'email_address' => 'E-Mail Address',
     'email_address_help_text' => 'This address is used for admin purposes, like activities notification',
@@ -304,4 +302,7 @@ return [
     'status_updated_success' => 'Status updated successfully',
     'instructor_price' => 'Instructor Price',
     'dashboard_assignment' => 'Dashboard Assignment',
+    'my_assignment' => 'My Assignments',
+    'assignment_info' => 'Assignment',
+    'collage_name' => 'Collage Name',
 ];

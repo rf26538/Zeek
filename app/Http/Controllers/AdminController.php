@@ -203,9 +203,37 @@ class AdminController extends Controller
     }
     public function adminAssignmentView(Request $request)
     {
-        $assignments = UserAssignment::orderBy('id', 'desc')->with('user')->get()->toArray();
+        $status = '';
+        $q = '';
+        $q1 = '';
+        $q2 = '';
+        $user = Auth::user();
 
-        return view('admin.list_assignment', compact('assignments'));
+        $res = UserAssignment::query();
+
+        if($request->has('q') && !empty($request->input('q'))) {
+            $r = $request->input('q');
+            $res->where('collage_name','like', '%' . $q . '%');
+        }
+
+        if($request->has('q1') && !empty($request->input('q1'))) {
+            $r1 = $request->input('q1');
+            $res->where('department_name','like', '%' . $q1 . '%');
+        }
+        
+        if($request->has('q2') && !empty($request->input('q2'))) {
+            $r2 = $request->input('q2');
+            $res->where('course_name','like', '%' . $q2 . '%');
+        }
+        
+        if($request->has('status') && !empty($request->input('status'))) {
+            $status = $request->input('status');
+            $res->where('status','like', '%' . $status . '%');
+        }
+        
+        $assignments = $res->paginate(10);
+
+        return view('admin.list_assignment', compact('assignments', 'status', 'q', 'q1', 'q2'));
     }
 
     public function editAssigment($id)

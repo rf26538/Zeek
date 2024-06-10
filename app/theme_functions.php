@@ -87,7 +87,8 @@ function dashboard_menu()
         ],
         'list_assignment_view' => [
             'name' => __t('list_assignment_view'),
-            'icon' => '<i class="la la-history"></i>'
+            'icon' => '<i class="la la-history"></i>',
+            'is_active' => request()->is('dashboard/list_assignment_view*'),
         ],
         'profile_settings' => [
             'name' => __t('settings'),

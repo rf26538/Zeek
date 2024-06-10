@@ -164,42 +164,38 @@ class DashboardController extends Controller
     }
 
     public function listAssignmentView(Request $request) {
+        $status = '';
+        $q = '';
+        $q1 = '';
+        $q2 = '';
         $user = Auth::user();
 
-        if ($request->has(['q', 'status'])) {
-            $query = $request->input('q');
-            $status = $request->input('status');
-            
-            if (!empty($query) && $status == 'all') {
-                $res = UserAssignment::where('name', 'like', '%' . $query . '%')
-                ->orWhere('collage_name', 'like', '%' . $query . '%')
-                ->orWhere('assignment_file_name', 'like', '%' . $query . '%');
-                $assignments = $res->paginate(10);
-    
-            } elseif (empty($query) && $status != 'all') {
-                $res = UserAssignment::where('status', $status);
-                $assignments = $res->paginate(10);
-    
-            } elseif (!empty($query) && $status != 'all') {
-                $res = UserAssignment::where('name', 'like', '%' . $query . '%')
-                ->orWhere('collage_name', 'like', '%' . $query . '%')
-                ->orWhere('assignment_file_name', 'like', '%' . $query . '%')
-                ->orWhere('status', $status);
-                $assignments = $res->paginate(10);
-            }      
-        } else {
-            $query = '';
-            $status = 'all';
-            $condition = ['user_id' => $user->id];
-            if ($user->user_type == 'instructor') { 
-                $condition = ['assinged_user_id' => $user->id];
-            }
-            
-            $res = UserAssignment::where($condition);
-            $assignments = $res->paginate(10);
+        $res = UserAssignment::query();
+
+        if($request->has('q') && !empty($request->input('q'))) {
+            $r = $request->input('q');
+            $res->where('collage_name','like', '%' . $q . '%');
         }
-        return view(theme('dashboard.assignment_view'), compact('assignments', 'query', 'status'));
-    }
+
+        if($request->has('q1') && !empty($request->input('q1'))) {
+            $r1 = $request->input('q1');
+            $res->where('department_name','like', '%' . $q1 . '%');
+        }
+        
+        if($request->has('q2') && !empty($request->input('q2'))) {
+            $r2 = $request->input('q2');
+            $res->where('course_name','like', '%' . $q2 . '%');
+        }
+        
+        if($request->has('status') && !empty($request->input('status'))) {
+            $status = $request->input('status');
+            $res->where('status','like', '%' . $status . '%');
+        }
+        
+        $assignments = $res->paginate(10);
+ 
+        return view(theme('dashboard.assignment_view'), compact('assignments', 'status', 'q', 'q1', 'q2'));
+    } 
 
 
     public function editAssigment($id)
