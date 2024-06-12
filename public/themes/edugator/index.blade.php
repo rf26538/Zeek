@@ -38,7 +38,6 @@
     </div>
     <div class="project-slider ">
         @foreach ($assignments as $assignment)
-        @if ($assignment['is_admin'] == 1)
         <a href="{{ route('dashbord_assignment_view', ['id' => $assignment['id']]) }}" class="text-decoration-none">
             <div class="card cardSlider">
                 <div class="row no-gutters">
@@ -54,11 +53,10 @@
                         </div>
                     </div>
                 </div>
+            <!-- </div> -->
         </a>
     </div>
-    @endif
     @endforeach
-</div>
 </div>
 @endif
 
@@ -245,19 +243,19 @@
         </div>
         <div class="project-slider">
             @foreach ($instructors as $instructor)
-            <div class="card cardSlider">
-                <div class="row no-gutters">
-                    <div class="user-card">
-                        <img src="{{ asset('icons/man2.png') }}" class="user-img" alt="Project Image">
-                        <div class="card-body">
-                            <h6 class="lead"><b>{{ $instructor['name'] }}</b></h6>
-                            <p class="card-text text-muted truncate-text">{{ $instructor['email'] }}</p>
-                            <p class="card-text text-muted truncate-text content"><span>{{ $instructor['job_title']}}</span>{{ $instructor['about_me']}}</p>
-                            <button class="btn btn-link" onclick="toggleContent(this)"><i>See More</i></button>
+            <a href="{{ route('instructor_info', ['id' => $instructor['id']]) }}" class="text-decoration-none">
+                <div class="card cardSlider">
+                    <div class="row no-gutters">
+                        <div class="user-card">
+                            <img src="{{ asset('icons/man2.png') }}" class="user-img" alt="Project Image">
+                            <div class="card-body">
+                                <h6 class="lead"><b>{{ $instructor['name'] }}</b></h6>
+                                <p class="card-text text-muted truncate-text">{{ $instructor['email'] }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
             @endforeach
         </div>
     </div>
@@ -402,7 +400,7 @@
 
 </div>
 
-<script>
+<!-- <script>
     function toggleContent(button) {
         var content = button.previousElementSibling;
         content.classList.toggle('expanded');
@@ -412,6 +410,6 @@
             button.textContent = 'See More';
         }
     }
-</script>
+</script> -->
 
 @endsection

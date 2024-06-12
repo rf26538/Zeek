@@ -378,7 +378,13 @@ class DashboardController extends Controller
     {
         $title = __a('dashboard_assignment');
         $assignment = UserAssignment::where('id', $id)->first();
-        return view(theme('dashboard.admin_dashboard_assignment_view'), compact('assignment', 'title'));
+        return view(theme('dashboard.dashboard_assignment_view'), compact('assignment', 'title'));
+    }
+    public function instructorInfoView($id)
+    {
+        $title = __a('Instructor Information');
+        $instructor = User::where('id', $id)->first();
+        return view(theme('dashboard.instructor_info_view'), compact('instructor', 'title'));
     }
     public function submitInstructorAssigment(Request $request)
     {

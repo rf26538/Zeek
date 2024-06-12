@@ -302,6 +302,7 @@ return [
     'status_updated_success' => 'Status updated successfully',
     'instructor_price' => 'Instructor Price',
     'dashboard_assignment' => 'Dashboard Assignment',
+    'instructor_info' => 'Instructor Information',
     'my_assignment' => 'My Assignments',
     'assignment_info' => 'Assignment',
     'collage_name' => 'Collage Name',

@@ -259,9 +259,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::group(['prefix' => 'purchases'], function () {
         Route::get('/', 'DashboardController@purchaseHistory')->name('purchase_history');
         Route::get('view/{id}', 'DashboardController@purchaseView')->name('purchase_view');
-    });
+        });
 });
-
+        
+    Route::get('instructor_info/{id}', 'DashboardController@instructorInfoView')->name('instructor_info');
 /**
  * Admin Area
  */
