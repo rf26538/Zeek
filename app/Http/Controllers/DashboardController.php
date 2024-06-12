@@ -29,7 +29,7 @@ class DashboardController extends Controller
             $end_date = date('Y-m-t');
 
             $begin = new \DateTime($start_date);
-            $end = new \DateTime($end_date.' + 1 day');
+            $end = new \DateTime($end_date . ' + 1 day');
             $interval = \DateInterval::createFromDateString('1 day');
             $period = new \DatePeriod($begin, $interval, $end);
 
@@ -163,7 +163,8 @@ class DashboardController extends Controller
         return view(theme('dashboard.purchase_view'), compact('title', 'payment'));
     }
 
-    public function listAssignmentView(Request $request) {
+    public function listAssignmentView(Request $request)
+    {
         $status = '';
         $q = '';
         $q1 = '';
@@ -172,37 +173,38 @@ class DashboardController extends Controller
 
         $res = UserAssignment::query();
 
-        if($request->has('q') && !empty($request->input('q'))) {
+        if ($request->has('q') && !empty($request->input('q'))) {
             $r = $request->input('q');
-            $res->where('collage_name','like', '%' . $q . '%');
+            $res->where('collage_name', 'like', '%' . $r . '%');
         }
 
-        if($request->has('q1') && !empty($request->input('q1'))) {
+        if ($request->has('q1') && !empty($request->input('q1'))) {
             $r1 = $request->input('q1');
-            $res->where('department_name','like', '%' . $q1 . '%');
+            $res->where('department_name', 'like', '%' . $r1 . '%');
         }
-        
-        if($request->has('q2') && !empty($request->input('q2'))) {
+
+        if ($request->has('q2') && !empty($request->input('q2'))) {
             $r2 = $request->input('q2');
-            $res->where('course_name','like', '%' . $q2 . '%');
+            $res->where('course_name', 'like', '%' . $r2 . '%');
         }
-        
-        if($request->has('status') && !empty($request->input('status'))) {
+
+        if ($request->has('status') && !empty($request->input('status'))) {
             $status = $request->input('status');
-            $res->where('status','like', '%' . $status . '%');
+            $res->where('status', 'like', '%' . $status . '%');
         }
-        
+
         $assignments = $res->paginate(10);
- 
+
+
         return view(theme('dashboard.assignment_view'), compact('assignments', 'status', 'q', 'q1', 'q2'));
-    } 
+    }
 
 
     public function editAssigment($id)
     {
         $assignment = UserAssignment::with('user')->find($id);
         $title = __a('assignment_list');
-        
+
         return view(theme('dashboard.assignmentedit'), compact('assignment', 'title'));
     }
 
@@ -222,7 +224,7 @@ class DashboardController extends Controller
             $end_date = date('Y-m-t');
 
             $begin = new \DateTime($start_date);
-            $end = new \DateTime($end_date.' + 1 day');
+            $end = new \DateTime($end_date . ' + 1 day');
             $interval = \DateInterval::createFromDateString('1 day');
             $period = new \DatePeriod($begin, $interval, $end);
 
@@ -256,7 +258,7 @@ class DashboardController extends Controller
                 $chartData[$formatDate] = $salesCount;
             }
             return view(theme('dashboard.dashboard'), compact('title', 'chartData'));
-        } else if($user->user_type == 'admin' || $user->user_type == 'student') {
+        } else if ($user->user_type == 'admin' || $user->user_type == 'student') {
             return view(theme('dashboard.assignment_register_view'));
         }
     }
@@ -276,40 +278,40 @@ class DashboardController extends Controller
     public function approvePayment(Request $request)
     {
         UserAssignment::where('id', $request->aId)
-                        ->where('assinged_user_id',$request->iId)
-                        ->update(['status' => 1]);
+            ->where('assinged_user_id', $request->iId)
+            ->update(['status' => 1]);
         return redirect()->back()->with('success', __a('payment_approved'));
     }
     public function setAssignmentPayment(Request $request)
     {
         UserAssignment::where('id', $request->assignmentId)
-                        ->where('assinged_user_id',$request->instructorId)
-                        ->update(['amount' => $request->price]);
+            ->where('assinged_user_id', $request->instructorId)
+            ->update(['amount' => $request->price]);
         // return redirect()->back()->with('success', __a('amount_set_success'));
 
-        return response()->json(['success'=> __a('amount_set_success')]);
+        return response()->json(['success' => __a('amount_set_success')]);
     }
     public function downloadAssignment(Request $request)
     {
         $as = UserAssignment::where('id', $request->aId)->first();
 
         $imagePath = asset('uploads/studentsAssignments/' . $as->assignment_files_name);
-        return response()->json(['filename'=> $as->assignment_files_name, 'filePath' => $imagePath]);
+        return response()->json(['filename' => $as->assignment_files_name, 'filePath' => $imagePath]);
     }
 
     public function registerAssignment(Request $request)
     {
-        
+
         $rules = [
             'name' => 'required',
             'colgname' => 'required',
             'depname' => 'required',
             'crsname' => 'required',
             'desc' => 'required',
-            'pagenum' => 'required|numeric',
-            'assignments' => 'required|file', // Check if 'assignments' field is not empty and is a file
+            'pagenum' => 'required|numeric', // Ensure 'pagenum' accepts only numeric values
+            'assignments' => 'required|file|mimes:png,jpeg,jpg,doc,docx,pdf', // Check if 'assignments' field is not empty and is a file
         ];
-
+        
         $messages = [
             'name.required' => 'Please enter Title/Name',
             'colgname.required' => 'Please enter School/College Name',
@@ -317,16 +319,16 @@ class DashboardController extends Controller
             'crsname.required' => 'Please enter Course Name',
             'desc.required' => 'Please enter Description',
             'pagenum.required' => 'Please enter Page Number',
-            'pagenum.numeric' => 'Page Number should only be numbers.',
+            'pagenum.numeric' => 'Page Number should only be numeric.',
             'assignments.required' => 'Please select a file',
             'assignments.file' => 'Please upload a valid file.',
-            'assignments.mimes' => 'Only PDF and Word files are allowed.',
-        ];
+            'assignments.mimes' => 'Only PNG, JPEG, JPG, DOC, DOCX, and PDF files are allowed.',
+        ];          
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
         // Check if 'assignments' field is not empty before checking its MIME type
-        $validator->sometimes('assignments', 'mimes:pdf,doc,docx', function ($input) {
+        $validator->sometimes('assignments', 'mimes:png,jpeg,jpg,doc,docx,pdf', function ($input) {
             return $input->hasFile('assignments'); // Check if 'assignments' field is a file
         });
 
@@ -381,18 +383,18 @@ class DashboardController extends Controller
     public function submitInstructorAssigment(Request $request)
     {
         $rules = [
-            'instructorAssignment' => 'required|file'
+            'instructorAssignment' => 'required|file|mimes:pdf'
         ];
-        
+
         $messages = [
             'instructorAssignment.required' => 'Please select a file',
             'instructorAssignment.file' => 'Please upload a valid file.',
-            'instructorAssignment.mimes' => 'Only PDF and Word files are allowed.'
+            'instructorAssignment.mimes' => 'Only PDF files are allowed.'
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
-        $validator->sometimes('instructorAssignment', 'mimes:pdf,doc,docx', function ($input) {
+        $validator->sometimes('instructorAssignment', 'mimes:pdf', function ($input) {
             return $input->hasFile('instructorAssignment');
         });
 
@@ -401,20 +403,20 @@ class DashboardController extends Controller
         }
 
         if ($request->hasFile('instructorAssignment')) {
-            
+
             $file = $request->file('instructorAssignment');
             $directory = public_path('uploads/InstructorAssignment');
             if (!File::isDirectory($directory)) {
                 File::makeDirectory($directory, 0755, true, true);
             }
-             
-            $fileName = time().'_Instructor.'.$file->getClientOriginalExtension();
+
+            $fileName = time() . '_Instructor.' . $file->getClientOriginalExtension();
             $file->move($directory, $fileName);
 
             UserAssignment::where('id', $request->id)
-            ->update(['instructor_assignment_file_name' => $fileName, 'status' => 2]);
-        } 
-        
+                ->update(['instructor_assignment_file_name' => $fileName, 'status' => 2]);
+        }
+
         return redirect()->route('list_assignment_view')->with('success', 'File uploaded successfully');
     }
 }

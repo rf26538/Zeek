@@ -213,17 +213,17 @@ class AdminController extends Controller
 
         if($request->has('q') && !empty($request->input('q'))) {
             $r = $request->input('q');
-            $res->where('collage_name','like', '%' . $q . '%');
+            $res->where('collage_name','like', '%' . $r . '%');
         }
 
         if($request->has('q1') && !empty($request->input('q1'))) {
             $r1 = $request->input('q1');
-            $res->where('department_name','like', '%' . $q1 . '%');
+            $res->where('department_name','like', '%' . $r1 . '%');
         }
         
         if($request->has('q2') && !empty($request->input('q2'))) {
             $r2 = $request->input('q2');
-            $res->where('course_name','like', '%' . $q2 . '%');
+            $res->where('course_name','like', '%' . $r2 . '%');
         }
         
         if($request->has('status') && !empty($request->input('status'))) {
@@ -254,7 +254,7 @@ class AdminController extends Controller
             'crsname' => 'required',
             'desc' => 'required',
             'pagenum' => 'required|numeric',
-            'assignments' => 'required|file', // Check if 'assignments' field is not empty and is a file
+            'assignments' => 'required|file|mimes:pdf',
         ];
 
         $messages = [
@@ -267,13 +267,13 @@ class AdminController extends Controller
             'pagenum.numeric' => 'Page Number should only be numbers.',
             'assignments.required' => 'Please select a file',
             'assignments.file' => 'Please upload a valid file.',
-            'assignments.mimes' => 'Only PDF and Word files are allowed.',
+            'assignments.mimes' => 'Only PDF files are allowed.',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
         // Check if 'assignments' field is not empty before checking its MIME type
-        $validator->sometimes('assignments', 'mimes:pdf,doc,docx', function ($input) {
+        $validator->sometimes('assignments', 'mimes:pdf', function ($input) {
             return $input->hasFile('assignments'); // Check if 'assignments' field is a file
         });
 
@@ -352,9 +352,8 @@ class AdminController extends Controller
     }
     public function updateInstructorStatus(Request $request)
     {   
-        $status = $request->value == true ? 0 : 1;
         User::where('id', $request->id)
-        ->update(['is_for_dashboard' => $status]);
+        ->update(['is_for_dashboard' => $request->isChecked]);
     
         return response()->json(['success'=> __a('status_updated_success')]);
     }

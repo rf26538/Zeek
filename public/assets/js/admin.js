@@ -81,9 +81,8 @@ $(function () {
 
     $(document).on('change', '#changeInstructorDashboardStatus', function () {
         let id = $(this).attr('data-id');
-        let value = $(this).is(':checked');
+        let isChecked = $(this).is(':checked');
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
-        console.log({id, value});
 
         $.ajax({
             url: pageData.routes.update_instructor_status,
@@ -91,9 +90,14 @@ $(function () {
             headers: {
                 'X-CSRF-TOKEN': csrfToken
             },
-            data: {id, value},
+            data: {id : id, isChecked: isChecked ? 1 : 0},
             success: function (data) {
-                
+                $('#responseMessage').text(data.success);
+                $('#responseMessage').css('display', 'block');
+
+                setTimeout(function () {
+                    $('#responseMessage').fadeOut();
+                }, 2000); 
             }
         });
     });

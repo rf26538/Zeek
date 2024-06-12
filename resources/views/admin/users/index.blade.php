@@ -2,6 +2,7 @@
 @section('content')
 
 <form method="get">
+    <div id="responseMessage" class="alert alert-success" role="alert" style="display: none;"></div>
     <div class="row">
         <div class="col-md-5">
             <div class="input-group">

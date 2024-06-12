@@ -49,8 +49,6 @@
                         <div class="card-body">
                             <h5 class="lead text-user">project3 nbsnbdasc cas</h5>
                             <p class="card-text text-user">IT 203<br>Saudi Electronic University </p>
-                            <!-- <h5 class="lead text-user">{{$assignment['assignment_file_name']}}</h5>
-                            <p class="card-text text-user">{{$assignment['course_name']}}<br>{{$assignment['collage_name']}}</p> -->
                             <p class="card-text text-user"><span class="badge badge-secondary">Assignment</span></p>
 
                         </div>

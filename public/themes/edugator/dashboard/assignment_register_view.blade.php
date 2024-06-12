@@ -33,9 +33,9 @@
                 @enderror
             </div>
             <div class="col mt-2">
-                <input type="text" name="pagenum" class="form-control reg" placeholder="Page Number" value="{{ old('pagenum') }}">
+                <input type="text" name="pagenum" id="pagenum" class="form-control reg" placeholder="Page Number" value="{{ old('pagenum') }}">
                 @error('pagenum')
-                <div class="text-danger">{{ $message }}</div>
+                <div id="pagenumError" class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
         </div>
@@ -78,17 +78,49 @@
             var fileName = fileInput.value.split('\\').pop();
             var fileType = file ? file.type : null;
 
-            // Display filename below the file input if it's a PDF or DOC/DOCX file
-            if (fileType === 'application/pdf' || fileName.toLowerCase().endsWith('.pdf') ||
-                fileType === 'application/msword' || fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-                fileName.toLowerCase().endsWith('.doc') || fileName.toLowerCase().endsWith('.docx')) {
+            // Check if the file type is allowed
+            if (fileType === 'application/pdf' || 
+                fileType === 'application/msword' || 
+                fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+                fileType === 'image/jpeg' || 
+                fileType === 'image/jpg' ||
+                fileName.toLowerCase().endsWith('.pdf') ||
+                fileName.toLowerCase().endsWith('.doc') || 
+                fileName.toLowerCase().endsWith('.docx') ||
+                fileName.toLowerCase().endsWith('.jpeg') ||
+                fileName.toLowerCase().endsWith('.jpg')) {
                 document.getElementById('fileTypeLabel').textContent = fileName;
                 document.getElementById('fileTypeLabelError').textContent = '';
             } else {
                 document.getElementById('fileTypeLabel').textContent = '';
-                document.getElementById('fileTypeLabelError').textContent = 'Only pdf and docs are allowed';
+                document.getElementById('fileTypeLabelError').textContent = 'Only pdf, docs, jpg, and jpeg files are allowed';
+                fileInput.value = ''; // Clear the file input
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var pagenumInput = document.getElementById('pagenum');
+
+            pagenumInput.addEventListener('input', function () {
+                var inputValue = pagenumInput.value;
+
+                // Remove non-numeric characters using regex
+                var numericValue = inputValue.replace(/\D/g, '');
+
+                // Update input value with only numeric characters
+                pagenumInput.value = numericValue;
+
+                // Display error if non-numeric characters were entered
+                var errorDiv = document.getElementById('pagenumError');
+                if (inputValue !== numericValue) {
+                    errorDiv.textContent = 'Please enter only numbers.';
+                } else {
+                    errorDiv.textContent = '';
+                }
+            });
+        });
+
+
     </script>
 
 </div>

@@ -305,4 +305,5 @@ return [
     'my_assignment' => 'My Assignments',
     'assignment_info' => 'Assignment',
     'collage_name' => 'Collage Name',
+    'instructor_amount' => 'Instructor Amount',
 ];
