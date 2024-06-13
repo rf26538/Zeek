@@ -15,6 +15,29 @@ $(function () {
         $('select.select2').select2();
     }
 
+    $(document).on('change', '#isForDashboard', function () {
+        let id = $(this).attr('data-id');
+        let isChecked = $(this).is(':checked');
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            url: pageData.routes.admin_assignment_update_is_for_dashboard,
+            type: "POST",
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: {id : id, isChecked: isChecked ? 1 : 0},
+            success: function (data) {
+                $('#responseMessage').text(data.success);
+                $('#responseMessage').css('display', 'block');
+
+                setTimeout(function () {
+                    $('#responseMessage').fadeOut();
+                }, 2000); 
+            }
+        });
+    });
+
     document.addEventListener('DOMContentLoaded', function () {
         var courseSlider = document.getElementById('courseSlider');
         if (courseSlider) {
@@ -101,7 +124,6 @@ $(function () {
             }
         });
     });
-    
 
     /**
      * Admin Sidebar Menu

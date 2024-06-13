@@ -1,50 +1,115 @@
 @extends('layouts.theme')
 @section('content')
 
-<div class="container-fluid mb-10">
-    <div class="row">
-        <div class="col-md-4">
-            <table class="table table-striped table-bordered">
-                <tr>
-                    <th>{{__a('assignment_title')}}</th>
-                    <td>{{ $assignment->name}}</td>
-                </tr>
-                <tr>
-                    <th>{{__a('school')}}</th>
-                    <td>{{ $assignment->collage_name}}</td>
-                </tr>
-                <tr>
-                    <th>{{__a('dep')}}</th>
-                    <td>{{ $assignment->department_name}}</td>
-                </tr>
-                <tr>
-                    <th>{{__a('course')}}</th>
-                    <td>{{ $assignment->course_name}}</td>
-                </tr>
-                <tr>
-                    <th>{{__a('page')}}</th>
-                    <td>{{ $assignment->page_number}}</td>
-                </tr>
-                <tr>
-                    <th>{{__a('file')}}</th>
-                    <td>{{ $assignment->assignment_file_name}}</td>
-                </tr>
-                <tr>
-                    <th>{{__a('instructor_amount')}}</th>
-                    <td> {{ $assignment->instructor_amount ?? ''}}</td>
-                </tr>
 
-            </table>
-        </div>
-        
-        <div class="col-md-8">
-            <div class="iframe-container">
-                <iframe src="{{ asset('uploads/InstructorAssignment/t.pdf')}}"  width="70%" height="800" style="border: none;" allowFullScreen></iframe>
+<style>
+    .main_wrapper {
+        width: 100%;
+    }
+
+    .left_pages {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+    }
+
+    .left_pages div,
+    .left_pages div img {
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .left_pages div img {
+        width: 100%;
+        height: auto;
+        max-height: 250px;
+    }
+
+    .right_pages {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+        border-radius: 5px;
+    }
+
+    .right_pages div {
+        border-radius: 5px;
+        overflow: hidden;
+        background-color: #fff;
+        margin-bottom: 20px;
+        width: 100%;
+        height: 800px;
+        padding: 15px;
+        filter: blur(4px);
+    }
+
+    .right_pages div:nth-child(1) {
+        filter: blur(0px)
+    }
+
+    .right_pages div img {
+        height: auto;
+        max-height: 100%;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    #section {
+        width: 500px;
+        height: 400px;
+        word-wrap: break-word;
+    }
+
+    .moretext {
+        display: none;
+    }
+</style>
+<div class="main_wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-2">
+                <div class="left_pages">
+                        <div>
+                            <img src="{{ asset('uploads/studentsAssignments/'. $images[0])}}" alt=""> 
+                        </div>
+                        <div>
+                            <div class="article">
+                                <p>{{ $assignment->name }}</p>
+                                <p class="moretext">
+                                {{ $assignment->description }} 
+                                </p>
+                            </div>
+                            <a class="moreless-button" href="#">Read more</a>
+                        </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9 col-md-9 col-sm-10">
+                <div class="right_pages">
+                    @foreach ($images as $image)                    
+                    <div>
+                        <img src="{{ asset('uploads/studentsAssignments/'. $image)}}" alt=""> 
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-
-
+<script>
+    $('.moreless-button').click(function() {
+  $('.moretext').slideToggle();
+  if ($('.moreless-button').text() == "Read more") {
+    $(this).text("Read less")
+  } else {
+    $(this).text("Read more")
+  }
+});
+</script>
 @endsection

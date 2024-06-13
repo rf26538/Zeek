@@ -85,17 +85,20 @@ function dashboard_menu()
             'icon' => '<i class="la la-history"></i>',
             'is_active' => request()->is('dashboard/purchases*'),
         ],
-        'list_assignment_view' => [
-            'name' => __t('list_assignment_view'),
-            'icon' => '<i class="la la-history"></i>',
-            'is_active' => request()->is('dashboard/list_assignment_view*'),
-        ],
         'profile_settings' => [
             'name' => __t('settings'),
             'icon' => '<i class="la la-tools"></i>',
             'is_active' => request()->is('dashboard/settings*'),
         ],
     ]);
+
+    if(!$user->is_admin) {
+        $menu['list_assignment_view'] = [
+            'name' => __t('list_assignment_view'),
+            'icon' => '<i class="la la-history"></i>',
+            'is_active' => request()->is('dashboard/list_assignment_view*'),
+        ];
+    }
 
     if ($user->is_admin) {
         $menu['admin'] = [

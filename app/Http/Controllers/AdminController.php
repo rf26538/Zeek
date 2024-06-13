@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Spatie\PdfToImage\Pdf;
 
 class AdminController extends Controller
 {
@@ -211,29 +212,30 @@ class AdminController extends Controller
 
         $res = UserAssignment::query();
 
-        if($request->has('q') && !empty($request->input('q'))) {
+        if ($request->has('q') && !empty($request->input('q'))) {
             $r = $request->input('q');
-            $res->where('collage_name','like', '%' . $r . '%');
+            $res->where('collage_name', 'like', '%' . $r . '%');
         }
 
-        if($request->has('q1') && !empty($request->input('q1'))) {
+        if ($request->has('q1') && !empty($request->input('q1'))) {
             $r1 = $request->input('q1');
-            $res->where('department_name','like', '%' . $r1 . '%');
+            $res->where('department_name', 'like', '%' . $r1 . '%');
         }
-        
-        if($request->has('q2') && !empty($request->input('q2'))) {
-            $r2 = $request->input('q2');
-            $res->where('course_name','like', '%' . $r2 . '%');
-        }
-        
-        if($request->has('status') && !empty($request->input('status'))) {
-            $status = $request->input('status');
-            $res->where('status','like', '%' . $status . '%');
-        }
-        
-        $assignments = $res->paginate(10);
 
-        return view('admin.list_assignment', compact('assignments', 'status', 'q', 'q1', 'q2'));
+        if ($request->has('q2') && !empty($request->input('q2'))) {
+            $r2 = $request->input('q2');
+            $res->where('course_name', 'like', '%' . $r2 . '%');
+        }
+
+        if ($request->has('status') && !empty($request->input('status'))) {
+            $status = $request->input('status');
+            $res->where('status', '=', $status);
+        }
+
+        $assignments = $res->orderBy('created_at', 'desc')->paginate(10);
+        $title = __a('assignment_info');
+
+        return view('admin.list_assignment', compact('assignments', 'status', 'q', 'q1', 'q2', 'title'));
     }
 
     public function editAssigment($id)
@@ -244,9 +246,36 @@ class AdminController extends Controller
 
         return view('admin.assigmentedit', compact('assignment', 'users', 'title'));
     }
+
+    public function deleteAssigment($id)
+    {
+        // Find the assignment by its ID
+        $assignment = UserAssignment::find($id);
+
+        // Check if the assignment exists
+        if ($assignment) {
+            // Delete the assignment
+            $assignment->delete();
+
+            // Redirect back with a success message
+            return redirect()->back()->with('success', 'Assignment deleted successfully.');
+        } else {
+            // Redirect back with an error message if the assignment does not exist
+            return redirect()->back()->with('error', 'Assignment not found.');
+        }
+    }
+
+    public function assigmentUpdateShow(Request $request)
+    {
+        UserAssignment::where('id', $request->id)
+            ->update(['is_for_dashboard' => $request->isChecked]);
+
+        return response()->json(['success' => __a('status_updated_success')]);
+    }
+
+
     public function adminAssignmentSubmit(Request $request)
     {
-
         $rules = [
             'name' => 'required',
             'colgname' => 'required',
@@ -272,17 +301,11 @@ class AdminController extends Controller
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
-        // Check if 'assignments' field is not empty before checking its MIME type
-        $validator->sometimes('assignments', 'mimes:pdf', function ($input) {
-            return $input->hasFile('assignments'); // Check if 'assignments' field is a file
-        });
-
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         if ($request->hasFile('assignments')) {
-
             $file = $request->file('assignments');
             $directory = public_path('uploads/studentsAssignments');
             if (!File::isDirectory($directory)) {
@@ -292,37 +315,57 @@ class AdminController extends Controller
             $fileName = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
             $file->move($directory, $fileName);
 
+            $pdfPath = $directory . '/' . $fileName; // Define $pdfPath here
+
+            $pdf = new Pdf($pdfPath);
+            $imageNames = [];
+
+            // Determine the number of pages in the PDF
+            $totalPages = $pdf->getNumberOfPages();
+            $maxPages = min($totalPages, 3); // Convert maximum of 3 pages or total available pages
+
+            // Convert each page (up to $maxPages)
+            for ($page = 1; $page <= $maxPages; $page++) {
+                $outputImagePath = $directory . '/' . time() . '_' . $request->name . '_page' . $page . '.png';
+                $pdf->setPage($page)
+                    ->saveImage($outputImagePath);
+                if (file_exists($outputImagePath)) {
+                    $imageNames[] = basename($outputImagePath);
+                }
+            }
+
             $user = Auth::user();
 
             if ($user) {
                 $userAssignment = new UserAssignment([
                     'name' => $request->name,
-                    'collage_name'  => $request->colgname,
-                    'department_name'  => $request->depname,
-                    'course_name'  => $request->crsname,
-                    'description'  => $request->desc,
-                    'page_number'  => $request->pagenum,
-                    'assignment_file_name'  => $fileName,
-                    'is_for_dashboard'  => 1,
-                    'is_admin'  => 1
+                    'collage_name' => $request->colgname,
+                    'department_name' => $request->depname,
+                    'course_name' => $request->crsname,
+                    'description' => $request->desc,
+                    'page_number' => $request->pagenum,
+                    'assignment_file_name' => $fileName,
+                    'pdf_images' => implode(',', $imageNames),
+                    'is_for_dashboard' => 1,
+                    'is_admin' => 1
                 ]);
                 $userAssignment->user_id = $user->id;
                 $userAssignment->save();
-                return redirect()->back()->with('success', __a('assignment_upload_msg'));
+                return redirect()->back()->with('success', 'Assignment uploaded successfully');
             } else {
                 return redirect()->back()->with('error', 'User not authenticated');
             }
         }
     }
+
     public function adminAssignmentUpdate(Request $request)
-    {  
-        
+    {
+
         $rules = [
-            'is_for_dashboard' => 'integer',
             'amount' => 'integer',
             'instamount' => 'integer',
         ];
-        
+
         $messages = [
             'amount.required' => 'Please enter an amount',
             'amount.integer' => 'The amount must be an integer',
@@ -336,25 +379,29 @@ class AdminController extends Controller
         }
 
         $updateArr = [
-            'amount' => $request->amount, 
-            'is_for_dashboard' => $request->is_for_dashboard, 
-            'instructor_amount' => $request->instamount,
-            'status' => 1
+            'amount' => $request->amount,
+            'instructor_amount' => $request->instamount
         ];
 
         if ($request->has('assinged_user_id')) {
             $updateArr['assinged_user_id'] = $request->assinged_user_id;
         }
-    
+
+        if (!empty($request->instructorAssignment)) {
+            $updateArr['status'] = 2;
+        } else {
+            $updateArr['status'] = 1;
+        }
+
         UserAssignment::where('id', $request->id)->update($updateArr);
-    
+
         return redirect()->route('admin_assignment_view')->with('success', 'Instructor assigned successfully');
     }
     public function updateInstructorStatus(Request $request)
-    {   
+    {
         User::where('id', $request->id)
-        ->update(['is_for_dashboard' => $request->isChecked]);
-    
-        return response()->json(['success'=> __a('status_updated_success')]);
+            ->update(['is_for_dashboard' => $request->isChecked]);
+
+        return response()->json(['success' => __a('status_updated_success')]);
     }
 }

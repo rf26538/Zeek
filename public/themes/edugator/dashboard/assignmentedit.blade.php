@@ -31,11 +31,16 @@
     </tr>
     <tr>
         <th>{{__a('instructor')}}</th>
-        <td>{{ $assignment->user ? $assignment->user->name : ''}}</td>
+        <td>{{ $assignment->user ? $assignment->user->name : 'Not Assigned Yet'}}</td>
     </tr>
     <tr>
-        <th>{{__a('amount')}}</th>
-        <td>{{ $assignment['amount'] ?? 0 }}</td>
+        @if (Auth::user()->user_type == 'instructor')
+        <th>{{__a('instructor_amount')}}</th>
+        <td>{{ $assignment['instructor_amount'] ?? 0 }}</td>
+       @else
+       <th>{{__a('amount')}}</th>
+       <td>{{ $assignment['amount'] ?? 0 }}</td>
+       @endif
     </tr>
     <tr>
         <th>{{__a('file')}}</th>

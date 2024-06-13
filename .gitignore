@@ -1,5 +1,7 @@
 /node_modules
 /public/hot
+/public/uploads/assignments
+/public/uploads/InstructorAssignment
 /public/storage
 /storage/*.key
 /vendor

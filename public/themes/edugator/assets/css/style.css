@@ -75,7 +75,7 @@
 }
 
 .card.cardSlider{
-    width: 300px; /* Adjust card width as needed */
+    width: 300px; /*Adjust card width as needed */
     margin: 10px; /* Add some margin for spacing */
     border-radius: 10px; /* Rounded corners for the card */
     overflow: hidden; /* Ensure child elements stay within rounded corners */
@@ -2448,4 +2448,23 @@ User Profile Page
 .become-instructor-section img {
     max-width: 100%;
     height: auto;
+}
+img.image-assignment {
+    width: 100%;
+}
+.assignment-title {
+    color: #000000;
+    font-weight: 700;
+}
+.assignment-slider .slick-track
+{
+    display: flex !important;
+}
+
+.assignment-slider .slick-slide
+{
+    height: inherit !important;
+}
+.assignment-slider .card.cardSlider{
+    width:inherit;
 }

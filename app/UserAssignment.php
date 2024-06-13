@@ -33,7 +33,8 @@ class UserAssignment extends Model
         'is_for_dashboard',
         'is_admin',
         'assigned_user_id',
-        'instructor_amount' // Corrected field name
+        'instructor_amount',
+        'pdf_images'
     ];
 
     public function user(): BelongsTo

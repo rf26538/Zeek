@@ -21,46 +21,44 @@
 </div>
 
 <!-- ASSIGMENT -->
-@if ($assignments)
-<div class="container mt-5">
-    <div class="section-header-wrap">
-        <h3 class="section-title">
-            Assignment
-            @if (Auth::check())
-                @if (Auth::user()->user_type == 'student' || Auth::user()->user_type == 'admin')
-                    <a href="{{ route('assignment_register_view') }}" class="btn btn-primary float-right"><i class="la la-plus-square"></i> Submit </a>
+<div class="home-section-wrap home-blog-section-wrapper py-5">
+    <div class="container mt-2">
+        <div class="section-header-wrap">
+            <h3 class="section-title">
+                Assignment
+                @if (Auth::check() && (Auth::user()->user_type == 'student' || Auth::user()->user_type == 'admin'))
+                <a href="{{ route('assignment_register_view') }}" class="btn btn-primary float-right"><i class="la la-plus-square"></i> Submit Assignment</a>
                 @endif
-            @else
-            <a href="{{ route('assignment_register_view') }}" class="btn btn-primary float-right"><i class="la la-plus-square"></i> Submit </a>
-            @endif
-        </h3>
-        <p class="section-subtitle">Prepare a professional presentation with our instructors</p>
-    </div>
-    <div class="project-slider ">
-        @foreach ($assignments as $assignment)
-        <a href="{{ route('dashbord_assignment_view', ['id' => $assignment['id']]) }}" class="text-decoration-none">
-            <div class="card cardSlider">
-                <div class="row no-gutters">
-                    <div class="col-auto">
-                        <img src="{{ asset('icons/pdf.png') }}" class="card-img-left" alt="Project Image">
-                    </div>
-                    <div class="col fixed-height-row">
-                        <div class="card-body">
-                            <h5 class="lead text-user">project3 nbsnbdasc cas</h5>
-                            <p class="card-text text-user">IT 203<br>Saudi Electronic University </p>
-                            <p class="card-text text-user"><span class="badge badge-secondary">Assignment</span></p>
-
+            </h3>
+            <p class="section-subtitle">Prepare a professional presentation with our instructors</p>
+        </div>
+        <div class="assignment-slider">
+            @foreach ($assignments as $assignment)
+            @php
+            $images = explode(',', $assignment['pdf_images']);
+            $image = asset('uploads/studentsAssignments/' . trim($images[0]));
+            @endphp
+            <a href="{{ route('dashbord_assignment_view', ['id' => $assignment['id']]) }}" class="text-decoration-none card cardSlider">
+                <div class="">
+                    <div class="no-gutters">
+                        <div class="user-card">
+                            <img src="{{ $image }}" class="image-assignment" alt="">
+                            <div class="fixed-height-row">
+                                <div class="card-body px-0 pb-0 text-left">
+                                    <h5 class="lead text-user assignment-title"><strong>{{ $assignment['name'] }}</strong></h5>
+                                    <p class="card-text text-user truncate-text mb-2" title="{{ $assignment['description'] }}">{{ $assignment['description'] }}</p>
+                                    <span class="btn btn-primary">Go to Assignment</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            <!-- </div> -->
-        </a>
+            </a>
+            @endforeach
+        </div>
     </div>
-    @endforeach
 </div>
-@endif
 
-<!-- ASSIGMENT END-->
 
 <div class="become-instructor-section">
     <div class="container">

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Spatie\PdfToImage\Pdf;
 
 class DashboardController extends Controller
 {
@@ -172,6 +173,12 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         $res = UserAssignment::query();
+        
+        if($user->user_type == 'instructor') {
+            $res->where('assinged_user_id', $user->id);
+        } else if($user->user_type == 'student') { 
+            $res->where('user_id', $user->id);
+        }
 
         if ($request->has('q') && !empty($request->input('q'))) {
             $r = $request->input('q');
@@ -190,11 +197,10 @@ class DashboardController extends Controller
 
         if ($request->has('status') && !empty($request->input('status'))) {
             $status = $request->input('status');
-            $res->where('status', 'like', '%' . $status . '%');
+            $res->where('status', '=', $status);
         }
 
-        $assignments = $res->paginate(10);
-
+        $assignments = $res->orderBy('created_at', 'desc')->paginate(10);
 
         return view(theme('dashboard.assignment_view'), compact('assignments', 'status', 'q', 'q1', 'q2'));
     }
@@ -378,7 +384,8 @@ class DashboardController extends Controller
     {
         $title = __a('dashboard_assignment');
         $assignment = UserAssignment::where('id', $id)->first();
-        return view(theme('dashboard.dashboard_assignment_view'), compact('assignment', 'title'));
+        $images = explode(",", $assignment['pdf_images']);
+        return view(theme('dashboard.dashboard_assignment_view'), compact('images', 'title', 'assignment'));
     }
     public function instructorInfoView($id)
     {
@@ -419,8 +426,27 @@ class DashboardController extends Controller
             $fileName = time() . '_Instructor.' . $file->getClientOriginalExtension();
             $file->move($directory, $fileName);
 
+            $pdfPath = $directory . '/' . $fileName; // Define $pdfPath here
+
+            $pdf = new Pdf($pdfPath);
+            $imageNames = [];
+
+            // Determine the number of pages in the PDF
+            $totalPages = $pdf->getNumberOfPages();
+            $maxPages = min($totalPages, 3); // Convert maximum of 3 pages or total available pages
+
+            // Convert each page (up to $maxPages)
+            for ($page = 1; $page <= $maxPages; $page++) {
+                $outputImagePath = public_path('uploads/studentsAssignments') . '/' . time() . '_page' . $page . '.png';
+                $pdf->setPage($page)
+                    ->saveImage($outputImagePath);
+                if (file_exists($outputImagePath)) {
+                    $imageNames[] = basename($outputImagePath);
+                }
+            }
+
             UserAssignment::where('id', $request->id)
-                ->update(['instructor_assignment_file_name' => $fileName, 'status' => 2]);
+                ->update(['instructor_assignment_file_name' => $fileName, 'status' => 2, 'pdf_images' => $imageNames]);
         }
 
         return redirect()->route('list_assignment_view')->with('success', 'File uploaded successfully');

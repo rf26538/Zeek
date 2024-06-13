@@ -21,26 +21,23 @@
       </div>
     </div>
   </div>
-  @if($assignments)
+  @if($assignments && count($assignments) > 0)
 
   <div class="row">
     <div class="col-sm-12">
       <table class="table table-bordered table-striped">
         <tr>
-        <th><input class="bulk_check_all" type="checkbox" /></th>
+          <th>#</th>
           @if (Auth::user()->user_type == 'student')
           <th>{{ trans('admin.my_assignment') }}</th>
-          @else
-          <th>{{ trans('admin.assignment_info') }}</th>
           @endif
           <th>{{ trans('admin.collage_name') }}</th>
           <th>{{ trans('admin.dep') }}</th>
           <th>{{ trans('admin.course') }}</th>
           @if (Auth::user()->user_type == 'student')
           <th>{{ trans('admin.price') }}</th>
-          @endif
-          @if (Auth::user()->user_type == 'admin')
-          <th>{{ trans('admin.amount') }}</th>
+          @elseif (Auth::user()->user_type == 'instructor')
+          <th>{{ trans('admin.instructor_amount') }}</th>
           @endif
           <th>{{ trans('admin.status') }}</th>
           <th>{{ trans('admin.action') }}</th>
@@ -48,34 +45,40 @@
         @foreach($assignments as $key => $assignment)
         <tr>
           <td>
-              <label>
-                  <small class="text-muted">#{{$key+1}}</small>
-              </label>
+            <label>
+              <small class="text-muted">{{$key+1}}</small>
+            </label>
           </td>
+          @if (Auth::user()->user_type == 'student')
           <td>
             <a href="{{ asset('/uploads/studentsAssignments/' . $assignment['assignment_file_name']) }}" id="downloadFile" download>{{ $assignment['assignment_file_name'] }}</a>
           </td>
+          @endif
           <td>{{ $assignment['collage_name'] }}</td>
           <td>{{ $assignment['department_name'] }}</td>
           <td><strong>{{$assignment['course_name']}}</td>
-              <td>{{ $assignment['amount'] }}</td>
-            <td>
-              @if ($assignment['status'] == 0)
-              <span class="badge payment-status-initial badge-secondary">{{__a('in_progress')}}</span>
-              @elseif($assignment['status'] == 1)
-              <span class="badge payment-status-initial badge-primary">{{__a('assigned')}}</span>
-              @elseif($assignment['status'] == 2)
-              <span class="badge payment-status-initial badge-success">{{Auth::user()->user_type == 'instructor' ? __a('completed') : __a('com_download')}}</span>
-              @elseif($assignment['status'] == 3)
-              <span class="badge payment-status-initial badge-success">{{__a('completed')}}</span>
-              @endif
-            </td>
+          @if (Auth::user()->user_type == 'student')
+          <td>{{ $assignment['amount'] }}</td>
+          @elseif (Auth::user()->user_type == 'instructor')
+          <td>{{ $assignment['instructor_amount'] }}</td>
+          @endif
           <td>
-              <a href="{{ route('assignment_edit', $assignment['id'])}}" class="btn btn-info">
-                <span class="badge badge-info mx-2" data-toggle="tooltip" title="" data-original-title="view">
-                  <i class="la la-eye"></i>
-                </span>
-              </a>
+            @if ($assignment['status'] == 0)
+            <span class="badge payment-status-initial badge-secondary">{{__a('in_progress')}}</span>
+            @elseif($assignment['status'] == 1)
+            <span class="badge payment-status-initial badge-primary">{{__a('assigned')}}</span>
+            @elseif($assignment['status'] == 2)
+            <span class="badge payment-status-initial badge-success">{{Auth::user()->user_type == 'instructor' ? __a('completed') : __a('com_download')}}</span>
+            @elseif($assignment['status'] == 3)
+            <span class="badge payment-status-initial badge-success">{{__a('completed')}}</span>
+            @endif
+          </td>
+          <td>
+            <a href="{{ route('assignment_edit', $assignment['id'])}}" class="btn btn-info">
+              <span class="badge badge-info mx-2" data-toggle="tooltip" title="" data-original-title="view">
+                <i class="la la-eye"></i>
+              </span>
+            </a>
           </td>
 
         </tr>
@@ -88,5 +91,4 @@
   @else
   {!! no_data() !!}
   @endif
-</form>
-@endsection
+  @endsection

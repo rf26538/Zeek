@@ -61,7 +61,7 @@
     <input type="hidden" value="{{ $assignment['id'] }}" name="id" />
     <div class="status-update-form-wrap d-flex p-3 bg-light">
         <div class="col-md-2">
-            <select class="form-control" name="assinged_user_id" {{ !empty($assignment['assinged_user_id']) ? 'disabled' : ''}}>
+            <select class="form-control" name="assinged_user_id" {{ $assignment['status'] == 2 ? 'disabled' : ''}}>
                 <option value="">Select Instructor</option>
                 @foreach ($users as $user)
                 <option value="{{ $user->id }}" {{(old('assinged_user_id') ?? $assignment['assinged_user_id']) == $user->id ? 'selected' : ''}}>{{ $user->name }}</option>
@@ -72,30 +72,20 @@
             @enderror
         </div>
         <div class="col-md-2">
-            <input type="hidden" name="status" class="form-control reg" value="{{ $assignment['status'] }}">
+            <input type="hidden" name="instructorAssignment" class="form-control reg" value="{{ $assignment['instructor_assignment_file_name'] }}">
             <input type="text" name="amount" class="form-control reg" placeholder="Amount" value="{{ old('amount') ?? $assignment['amount'] }}" {{ $assignment['status'] == 3 ? 'readonly' : '' }}>
             @error('amount')
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
         <div class="col-md-3">
-            <input type="text" name="instamount" class="form-control reg" placeholder="Instructor amount" value="{{ old('instructor_amount') ?? $assignment['instructor_amount'] }}" {{ $assignment['status'] == 3 ? 'readonly' : '' }}>
+            <input type="text" name="instamount" class="form-control reg" placeholder="Instructor amount" value="{{ old('instructor_amount') ?? $assignment['instructor_amount'] }}" {{ $assignment['status'] == 2 ? 'readonly' : '' }}>
             @error('instructor_amount')
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
         <div class="col-md-2">
-            <select class="form-control" name="is_for_dashboard" >
-                <option value="">Show on dashboard</option>
-                <option value="1" {{ (old('is_for_dashboard') ?? $assignment['is_for_dashboard']) == 1 ? 'selected' : '' }}>Yes</option>
-                <option value="0" {{ (old('is_for_dashboard') ?? $assignment['is_for_dashboard']) == 0 ? 'selected' : '' }}>No</option>
-            </select>
-            @error('assinged_user_id')
-            <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-info mb-2">{{__a('update')}}</button>
+            <button type="submit" class="btn btn-info mb-2" {{$assignment['status'] == 3 ? 'disabled' : ''}}>{{__a('update')}}</button>
         </div>
     </div>
 </form>

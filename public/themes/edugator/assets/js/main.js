@@ -4,6 +4,44 @@
  * Copyright 2020 | talentachievers | https://talentachievers.com
  * @package Edugator Theme
  ****************************************************************************/
+$(document).ready(function(){
+    // Duplicate slides to ensure there are more slides than slidesToShow
+    let $slides = $('.assignment-slider');
+    if ($slides.children().length <= 3) {
+        $slides.append($slides.children().clone());
+        $slides.append($slides.children().clone());
+    }
+    
+
+    // Initialize Slick slider
+    $slides.slick({
+        infinite: true,
+        dots: true,
+        speed: 300,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        adaptiveHeight: true,
+        centerMode: true,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    });
+});
 
 $(function () {
     "use strict";
