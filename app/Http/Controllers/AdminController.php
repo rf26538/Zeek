@@ -227,9 +227,12 @@ class AdminController extends Controller
             $res->where('course_name', 'like', '%' . $r2 . '%');
         }
 
-        if ($request->has('status') && !empty($request->input('status'))) {
+        if ($request->has('status')) {
             $status = $request->input('status');
-            $res->where('status', '=', $status);
+
+            if($status != 'all') {
+                $res->where('status', '=', $status);
+            }
         }
 
         $assignments = $res->orderBy('created_at', 'desc')->paginate(10);
