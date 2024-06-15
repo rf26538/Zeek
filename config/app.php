@@ -193,7 +193,6 @@ $config_class = [
          * Extend This application by adding module
          */
         \App\Module\PluginServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -249,7 +248,6 @@ $config_class = [
         /**
          * Application Specific aliases
          */
-        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

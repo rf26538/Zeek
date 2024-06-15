@@ -6,6 +6,8 @@ use App\Option;
 use App\banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
 
 class SettingsController extends Controller
 {
@@ -127,9 +129,25 @@ class SettingsController extends Controller
 
     public function uploadBanner(Request $request)
     {
-        if ($request->file('banner_file')) {
-            
+        $validator = Validator::make($request->all(), [
+            'banner_file' => 'required|array',
+            'banner_file.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', 
+        ], [
+            'banner_file.*.required' => 'Please select a file for each banner.',
+            'banner_file.*.image' => 'The file must be an image.',
+            'banner_file.*.mimes' => 'Only JPEG, PNG, JPG, and GIF images are allowed.',
+            'banner_file.*.max' => 'Each image must not be larger than 2MB.',
+        ]);
+
+        if ($validator->fails()) {
+            return Redirect::back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+    
+        if ($request->hasFile('banner_file')) {
             $directory = public_path('uploads/banner');
+            
             if (!File::isDirectory($directory)) {
                 File::makeDirectory($directory, 0755, true, true);
             }
@@ -137,12 +155,12 @@ class SettingsController extends Controller
             foreach ($request->file('banner_file') as $file) {
                 $fileName = $file->getClientOriginalName();
                 $file->move($directory, $fileName);
-                $option = new banner();
+                $option = new Banner();
                 $option->file_name = $fileName;
                 $option->save();
-            }  
+            }
         }
 
-        return redirect()->back()->with('success', __a('settings_saved_msg'));
+        return redirect()->back()->with('success', __('settings_saved_msg'));
     }
 }

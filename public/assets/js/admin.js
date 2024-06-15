@@ -15,6 +15,39 @@ $(function () {
         $('select.select2').select2();
     }
 
+    $('#inputGroupFile').change(function(e) {
+        var file = e.target.files[0];
+        if (file.type.match('image.*')) {
+            var img = new Image();
+            img.onload = function() {
+                var width = this.width;
+                var height = this.height;
+
+                var requiredWidth = 1024;
+                var requiredHeight = 576;
+
+                if (width === requiredWidth && height === requiredHeight) {
+                    $('#uploadForm').submit(function() {
+                        return true;
+                    });
+                } else {
+                    alert('Image dimensions must be exactly ' + requiredWidth + 'x' + requiredHeight + ' pixels.');
+                    $('#inputGroupFile').val('');
+                    $('#numfiles').text('Choose file');
+                    $('#uploadForm').off('submit');
+                    e.preventDefault();
+                }
+            };
+            img.src = URL.createObjectURL(file);
+        } else {
+            alert('Please upload an image file.');
+            $('#inputGroupFile').val('');
+            $('#numfiles').text('Choose file');
+            $('#uploadForm').off('submit');
+            e.preventDefault();
+        }
+    });
+
     $(document).on('change', '#isForDashboard', function () {
         let id = $(this).attr('data-id');
         let isChecked = $(this).is(':checked');
