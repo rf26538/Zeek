@@ -56,13 +56,13 @@
               @elseif ($assignment['status'] == 1)
               <span class="badge payment-status-success badge-primary">{{ __a('assigned') }}</span>
               @elseif ($assignment['instructor_assignment_file_name'] && $assignment['status'] == 2)
-              <span class="badge payment-status-success badge-success">{{ __a('paid') }}</span>
+              <span class="badge payment-status-success badge-success">{{ __a('completed') }}</span>
               @elseif ($assignment['instructor_assignment_file_name'] && $assignment['status'] == 3)
               <a href="{{ asset('/uploads/InstructorAssignment/' . $assignment['instructor_assignment_file_name']) }}" download>{{ $assignment['instructor_assignment_file_name'] }}</a>
               @endif
             </td>
             <td>
-              @if ($assignment['status'] == 3 || $assignment['is_admin'] == 1)
+              @if ($assignment['status'] == 2 || $assignment['is_admin'] == 1)
                 <label class="switch inst">
                   <input type="checkbox" id="isForDashboard" data-id="{{ $assignment['id'] }}" {{ $assignment->is_for_dashboard == 1 ? 'checked': ''}}>
                   <span class="slider inst round"></span>

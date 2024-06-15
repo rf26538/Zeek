@@ -21,6 +21,7 @@
 </div>
 
 <!-- ASSIGMENT -->
+@if ($assignments && count($assignments) > 0)
 <div class="home-section-wrap home-blog-section-wrapper py-5">
     <div class="container mt-2">
         <div class="section-header-wrap">
@@ -58,6 +59,7 @@
         </div>
     </div>
 </div>
+@endif
 
 
 <div class="become-instructor-section">
@@ -245,7 +247,7 @@
                 <div class="card cardSlider">
                     <div class="row no-gutters">
                         <div class="user-card">
-                            <img src="{{ asset('icons/man2.png') }}" class="user-img" alt="Project Image">
+                            <img src="{{ $instructor['photo'] ? media_image_uri($instructor['photo'])->thumbnail : asset('icons/man2.png') }}" class="user-img" alt="Project Image">
                             <div class="card-body">
                                 <h6 class="lead"><b>{{ $instructor['name'] }}</b></h6>
                                 <p class="card-text text-muted truncate-text">{{ $instructor['email'] }}</p>
