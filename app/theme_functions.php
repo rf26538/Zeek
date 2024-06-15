@@ -8,7 +8,7 @@ function dashboard_menu()
 
     $user = \Illuminate\Support\Facades\Auth::user();
 
-    if ($user->user_type == 'instructor') {
+    if ($user->isInstructor()) {
         $pendingDiscusionBadge = '';
         $pendingDiscussionCount = $user->instructor_discussions->where('replied', 0)->count();
         if ($pendingDiscussionCount) {
@@ -98,9 +98,10 @@ function dashboard_menu()
             'icon' => '<i class="la la-history"></i>',
             'is_active' => request()->is('dashboard/list_assignment_view*'),
         ];
-    }
 
-    if(!$user->user_type == 'student') {
+        }
+
+    if($user->user_type == 'student') {
         $menu['assignment_register_view'] = [  
             'name' => __t('create_assignment'),
             'icon' => '<i class="la la-history"></i>',

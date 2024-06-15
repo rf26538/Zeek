@@ -78,5 +78,28 @@
 
 
     </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    var pagenumInput = document.getElementById('pagenum');
+
+    pagenumInput.addEventListener('input', function () {
+        var inputValue = pagenumInput.value;
+
+        // Remove non-numeric characters using regex
+        var numericValue = inputValue.replace(/\D/g, '');
+
+        // Update input value with only numeric characters
+        pagenumInput.value = numericValue;
+
+        // Display error if non-numeric characters were entered
+        var errorDiv = document.getElementById('pagenumError');
+        if (inputValue !== numericValue) {
+            errorDiv.textContent = 'Please enter only numbers.';
+        } else {
+            errorDiv.textContent = '';
+        }
+    });
+});
+</script>
 
 @endsection

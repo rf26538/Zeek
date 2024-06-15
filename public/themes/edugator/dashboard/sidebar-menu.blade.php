@@ -14,8 +14,7 @@
     @endif
 
     <li>
-        <a href="{{ route('logout') }}"
-           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <a href="{{ route('logout') }}">
             <i class="la la-sign-out"></i> {{__t('logout')}}
         </a>
     </li>
