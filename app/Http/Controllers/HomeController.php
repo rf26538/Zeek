@@ -21,9 +21,8 @@ class HomeController extends Controller
         $popular_courses = Course::publish()->whereIsPopular(1)->orderBy('popular_added_at', 'desc')->take(8)->get();
         $posts = Post::post()->publish()->take(3)->get();
         $banners = banner::all();
-        $assignments = UserAssignment::where('is_admin', 1)->get()->toArray();
-        $instructors = User::where('is_for_dashboard', 1)->get()->toArray();
-        // $instructors = User::where('is_for_dashboard', 1)->where('user_type', 'instructor')->get()->toArray();
+        $assignments = UserAssignment::where('is_admin', 1)->get()->toArray();  
+        $instructors = User::where('is_for_dashboard', 1)->where('user_type', 'instructor')->get()->toArray();
 
 
         return view(theme('index'), compact('title', 'new_courses', 'featured_courses', 'popular_courses', 'posts', 'banners', 'assignments', 'instructors'));

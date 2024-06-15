@@ -53,6 +53,11 @@ $(function () {
         $('select.select2').select2();
     }
 
+    let $cslides = $('.project-slider');
+    if ($cslides.children().length <= 3) {
+        $cslides.append($cslides.children().clone());
+    }
+
     $('.project-slider').slick({
         dots: true,
         infinite: true,
