@@ -99,6 +99,9 @@ function dashboard_menu()
             'is_active' => request()->is('dashboard/list_assignment_view*'),
         ];
 
+        }
+
+    if(!$user->user_type == 'student') {
         $menu['assignment_register_view'] = [  
             'name' => __t('create_assignment'),
             'icon' => '<i class="la la-history"></i>',
