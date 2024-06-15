@@ -1,5 +1,12 @@
 @import url(../../../../assets/css/font-face.css);
 
+
+.fixed-size-img {
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+}
+
 /* SEE MORE */
 
 .text-user {

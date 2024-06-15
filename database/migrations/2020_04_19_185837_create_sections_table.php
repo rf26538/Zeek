@@ -13,14 +13,16 @@ class CreateSectionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sections', function (Blueprint $table) {
-            $table->id();
-            $table->integer('course_id')->nullable();
-            $table->string('section_name')->nullable();
-            $table->timestamp('unlock_date')->nullable();
-            $table->tinyInteger('unlock_days')->nullable();
-            $table->tinyInteger('sort_order')->default(0)->nullable();
-        });
+        if (!Schema::hasTable("sections")) {
+            Schema::create('sections', function (Blueprint $table) {
+                $table->id();
+                $table->integer('course_id')->nullable();
+                $table->string('section_name')->nullable();
+                $table->timestamp('unlock_date')->nullable();
+                $table->tinyInteger('unlock_days')->nullable();
+                $table->tinyInteger('sort_order')->default(0)->nullable();
+            });
+        }
     }
 
     /**

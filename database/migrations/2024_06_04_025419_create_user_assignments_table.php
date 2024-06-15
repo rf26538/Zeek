@@ -11,25 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_assignments', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->string('name')->nullable();
-            $table->string('collage_name')->nullable();
-            $table->string('department_name')->nullable();
-            $table->string('course_name')->nullable();
-            $table->string('description')->nullable();
-            $table->integer('page_number')->nullable();
-            $table->string('assignment_file_name')->nullable();
-            $table->string('instructor_assignment_file_name')->nullable();
-            $table->tinyInteger('is_for_dashboard')->nullable();
-            $table->integer('is_admin');
-            $table->string('status')->default(0);
-            $table->integer('assinged_user_id')->nullable();
-            $table->integer('amount')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable("user_assignments")) {
+            Schema::create('user_assignments', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('user_id');
+                $table->foreign('user_id')->references('id')->on('users');
+                $table->string('name')->nullable();
+                $table->string('collage_name')->nullable();
+                $table->string('department_name')->nullable();
+                $table->string('course_name')->nullable();
+                $table->string('description')->nullable();
+                $table->integer('page_number')->nullable();
+                $table->string('assignment_file_name')->nullable();
+                $table->string('instructor_assignment_file_name')->nullable();
+                $table->tinyInteger('is_for_dashboard')->nullable();
+                $table->integer('is_admin');
+                $table->string('status')->default(0);
+                $table->integer('assinged_user_id')->nullable();
+                $table->integer('amount')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

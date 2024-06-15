@@ -13,17 +13,19 @@ class CreateQuestionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('questions', function (Blueprint $table) {
-            $table->id();
+        if (!Schema::hasTable("questions")) {
+            Schema::create('questions', function (Blueprint $table) {
+                $table->id();
 
-            $table->integer('user_id')->nullable();
-            $table->integer('quiz_id')->nullable();
-            $table->string('title')->nullable();
-            $table->integer('image_id')->nullable();
-            $table->string('type', 20)->nullable();
-            $table->decimal('score', 5, 1)->nullable();
-            $table->integer('sort_order')->nullable();
-        });
+                $table->integer('user_id')->nullable();
+                $table->integer('quiz_id')->nullable();
+                $table->string('title')->nullable();
+                $table->integer('image_id')->nullable();
+                $table->string('type', 20)->nullable();
+                $table->decimal('score', 5, 1)->nullable();
+                $table->integer('sort_order')->nullable();
+            });
+        }
     }
 
     /**

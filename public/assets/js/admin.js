@@ -301,6 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
 document.addEventListener('DOMContentLoaded', function () {
     const inputGroupFile = document.getElementById('inputGroupFile');
     const fileLabel = document.getElementById('numfiles');

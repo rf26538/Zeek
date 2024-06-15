@@ -13,27 +13,29 @@ class CreateAttemptsTable extends Migration
      */
     public function up()
     {
-        Schema::create('attempts', function (Blueprint $table) {
-            $table->id();
-            $table->integer('course_id')->nullable();
-            $table->integer('quiz_id')->nullable();
-            $table->integer('user_id')->nullable();
-            $table->integer('reviewer_id')->nullable();
-            $table->integer('questions_limit')->nullable();
-            $table->integer('total_answered')->nullable();
-            $table->decimal('total_scores', 5, 1)->nullable();
-            $table->decimal('earned_scores', 5, 1)->nullable();
-            $table->integer('passing_percent')->nullable();
-            $table->integer('earned_percent')->nullable();
-            $table->string('status')->nullable();
-            $table->tinyInteger('quiz_gradable')->default(0)->nullable();
-            $table->tinyInteger('is_reviewed')->default(0)->nullable();
-            $table->timestamp('ended_at')->nullable();
-            $table->timestamp('reviewed_at')->nullable();
-            $table->tinyInteger('passed')->nullable();
+        if (!Schema::hasTable("attempts")) {
+            Schema::create('attempts', function (Blueprint $table) {
+                $table->id();
+                $table->integer('course_id')->nullable();
+                $table->integer('quiz_id')->nullable();
+                $table->integer('user_id')->nullable();
+                $table->integer('reviewer_id')->nullable();
+                $table->integer('questions_limit')->nullable();
+                $table->integer('total_answered')->nullable();
+                $table->decimal('total_scores', 5, 1)->nullable();
+                $table->decimal('earned_scores', 5, 1)->nullable();
+                $table->integer('passing_percent')->nullable();
+                $table->integer('earned_percent')->nullable();
+                $table->string('status')->nullable();
+                $table->tinyInteger('quiz_gradable')->default(0)->nullable();
+                $table->tinyInteger('is_reviewed')->default(0)->nullable();
+                $table->timestamp('ended_at')->nullable();
+                $table->timestamp('reviewed_at')->nullable();
+                $table->tinyInteger('passed')->nullable();
 
-            $table->timestamps();
-        });
+                $table->timestamps();
+            });
+        }
     }
 
     /**

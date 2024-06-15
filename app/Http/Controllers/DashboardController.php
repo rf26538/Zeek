@@ -317,8 +317,8 @@ class DashboardController extends Controller
             'depname' => 'required',
             'crsname' => 'required',
             'desc' => 'required',
-            'pagenum' => 'required|numeric', // Ensure 'pagenum' accepts only numeric values
-            'assignments' => 'required|file|mimes:png,jpeg,jpg,doc,docx,pdf', // Check if 'assignments' field is not empty and is a file
+            'pagenum' => 'required|numeric',
+            'assignments' => 'required|file|mimes:png,jpeg,jpg,doc,docx,pdf',
         ];
         
         $messages = [

@@ -13,11 +13,13 @@ class CreateOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table) {
-            $table->id();
-            $table->string('option_key', 50)->nullable();
-            $table->text('option_value')->nullable();
-        });
+        if (!Schema::hasTable("options")) {
+            Schema::create('options', function (Blueprint $table) {
+                $table->id();
+                $table->string('option_key', 50)->nullable();
+                $table->text('option_value')->nullable();
+            });
+        }
     }
 
     /**

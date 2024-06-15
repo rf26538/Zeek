@@ -13,18 +13,20 @@ class CreateDiscussionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('discussions', function (Blueprint $table) {
-            $table->id();
-            $table->integer('course_id')->default(0)->nullable();
-            $table->integer('content_id')->default(0)->nullable();
-            $table->integer('instructor_id')->default(0)->nullable();
-            $table->integer('user_id')->default(0)->nullable();
-            $table->integer('discussion_id')->default(0)->nullable();
-            $table->string('title')->nullable();
-            $table->text('message')->nullable();
-            $table->tinyInteger('replied')->default(0)->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable("discussions")) {
+            Schema::create('discussions', function (Blueprint $table) {
+                $table->id();
+                $table->integer('course_id')->default(0)->nullable();
+                $table->integer('content_id')->default(0)->nullable();
+                $table->integer('instructor_id')->default(0)->nullable();
+                $table->integer('user_id')->default(0)->nullable();
+                $table->integer('discussion_id')->default(0)->nullable();
+                $table->string('title')->nullable();
+                $table->text('message')->nullable();
+                $table->tinyInteger('replied')->default(0)->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

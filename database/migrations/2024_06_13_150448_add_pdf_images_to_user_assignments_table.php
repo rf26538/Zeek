@@ -13,9 +13,11 @@ class AddPdfImagesToUserAssignmentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('user_assignments', function (Blueprint $table) {
-            $table->text('pdf_images')->nullable()->after('assignment_file_name');
-        });
+        if (!Schema::hasColumn('user_assignments', 'pdf_images')) {
+            Schema::table('user_assignments', function (Blueprint $table) {
+                $table->text('pdf_images')->nullable()->after('assignment_file_name');
+            });
+        }
     }
 
     /**
@@ -25,8 +27,10 @@ class AddPdfImagesToUserAssignmentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('user_assignments', function (Blueprint $table) {
-            $table->dropColumn('pdf_images');
-        });
+        if (Schema::hasColumn('user_assignments', 'pdf_images')) {
+            Schema::table('user_assignments', function (Blueprint $table) {
+                $table->dropColumn('pdf_images');
+            });
+        }
     }
 }

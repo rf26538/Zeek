@@ -343,4 +343,11 @@ return [
     'instructor_assigned' => 'Instructor Assigned',
     'pay_here' => 'Pay Here',
     'download' => 'Download',
+    'title_name' => 'Title / Name',
+    'shoool_collage_name' => 'School / Collage Name',
+    'department_name' => 'Department Name',
+    'course_name' => 'Course Name',
+    'pages' => 'Pages',
+    'select_assignment' => 'Select Assignment',
+    'create_assignment' => 'Create Assignment',
 ];

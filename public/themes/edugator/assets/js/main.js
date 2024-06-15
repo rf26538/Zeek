@@ -4,7 +4,32 @@
  * Copyright 2020 | talentachievers | https://talentachievers.com
  * @package Edugator Theme
  ****************************************************************************/
+document.addEventListener('DOMContentLoaded', function () {
+    var pagenumInput = document.getElementById('pagenum');
+
+    pagenumInput.addEventListener('input', function () {
+        var inputValue = pagenumInput.value;
+
+        // Remove non-numeric characters using regex
+        var numericValue = inputValue.replace(/\D/g, '');
+
+        // Update input value with only numeric characters
+        pagenumInput.value = numericValue;
+
+        // Display error if non-numeric characters were entered
+        var errorDiv = document.getElementById('pagenumError');
+        if (inputValue !== numericValue) {
+            errorDiv.textContent = 'Please enter only numbers.';
+        } else {
+            errorDiv.textContent = '';
+        }
+    });
+});
+
 $(document).ready(function(){
+
+
+
     // Duplicate slides to ensure there are more slides than slidesToShow
     let $slides = $('.assignment-slider');
     if ($slides.children().length <= 3) {
@@ -195,6 +220,11 @@ $(function () {
     //Show file Name on select
     
     $('#assignmentFile').on('change', function(){
+        var fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+    
+    $('#inputGroupFileAdmin').on('change', function(){
         var fileName = $(this).val().split('\\').pop();
         $(this).next('.custom-file-label').addClass("selected").html(fileName);
     });

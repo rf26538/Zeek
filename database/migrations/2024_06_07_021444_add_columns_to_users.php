@@ -11,10 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('is_for_dashboard')->after('provider_user_id')->default(0);
-            $table->string('instructor_amount')->after('is_for_dashboard');
-        });
+        if (!Schema::hasColumn('users', 'is_for_dashboard')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->integer('is_for_dashboard')->default(0)->after('provider_user_id');
+            });
+        }
+
+        if (!Schema::hasColumn('users', 'instructor_amount')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('instructor_amount', 255)->after('is_for_dashboard');
+            });
+        }
     }
 
     /**
@@ -22,8 +29,16 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        if (Schema::hasColumn('users', 'is_for_dashboard')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('is_for_dashboard');
+            });
+        }
+
+        if (Schema::hasColumn('users', 'instructor_amount')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('instructor_amount');
+            });
+        }
     }
 };

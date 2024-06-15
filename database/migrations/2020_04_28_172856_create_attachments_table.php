@@ -13,16 +13,18 @@ class CreateAttachmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('attachments', function (Blueprint $table) {
-            $table->id();
-            $table->integer('course_id')->nullable(); //Course Attachments
+        if (!Schema::hasTable("attachments")) {
+            Schema::create('attachments', function (Blueprint $table) {
+                $table->id();
+                $table->integer('course_id')->nullable(); //Course Attachments
 
-            $table->integer('belongs_course_id')->nullable(); //Course ID > Section ID > Item ID
-            $table->integer('content_id')->nullable();
-            $table->integer('user_id')->nullable(); //Instructor ID
-            $table->integer('media_id')->nullable();
-            $table->string('hash_id')->nullable();
-        });
+                $table->integer('belongs_course_id')->nullable(); //Course ID > Section ID > Item ID
+                $table->integer('content_id')->nullable();
+                $table->integer('user_id')->nullable(); //Instructor ID
+                $table->integer('media_id')->nullable();
+                $table->string('hash_id')->nullable();
+            });
+        }
     }
 
     /**

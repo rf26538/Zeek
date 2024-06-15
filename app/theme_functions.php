@@ -98,6 +98,12 @@ function dashboard_menu()
             'icon' => '<i class="la la-history"></i>',
             'is_active' => request()->is('dashboard/list_assignment_view*'),
         ];
+
+        $menu['assignment_register_view'] = [  
+            'name' => __t('create_assignment'),
+            'icon' => '<i class="la la-history"></i>',
+            'is_active' => request()->is('dashboard/assignment_register_view*'),
+        ];
     }
 
     if ($user->is_admin) {

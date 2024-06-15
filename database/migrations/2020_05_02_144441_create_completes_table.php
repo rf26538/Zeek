@@ -13,14 +13,16 @@ class CreateCompletesTable extends Migration
      */
     public function up()
     {
-        Schema::create('completes', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id')->nullable();
-            $table->integer('completed_course_id')->nullable();
-            $table->integer('course_id')->nullable();
-            $table->integer('content_id')->nullable();
-            $table->timestamp('completed_at');
-        });
+        if (!Schema::hasTable("completes")) {
+            Schema::create('completes', function (Blueprint $table) {
+                $table->id();
+                $table->integer('user_id')->nullable();
+                $table->integer('completed_course_id')->nullable();
+                $table->integer('course_id')->nullable();
+                $table->integer('content_id')->nullable();
+                $table->timestamp('completed_at');
+            });
+        }
     }
 
     /**

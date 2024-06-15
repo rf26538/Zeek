@@ -13,21 +13,23 @@ class CreateEarningsTable extends Migration
      */
     public function up()
     {
-        Schema::create('earnings', function (Blueprint $table) {
-            $table->id();
-            $table->integer('instructor_id')->nullable();
-            $table->integer('course_id')->nullable();
-            $table->integer('payment_id')->nullable();
-            $table->string('payment_status')->nullable();
-            $table->decimal('amount', 16)->nullable();
-            $table->decimal('instructor_amount', 16)->nullable();
-            $table->decimal('admin_amount', 16)->nullable();
+        if (!Schema::hasTable("earnings")) {
+            Schema::create('earnings', function (Blueprint $table) {
+                $table->id();
+                $table->integer('instructor_id')->nullable();
+                $table->integer('course_id')->nullable();
+                $table->integer('payment_id')->nullable();
+                $table->string('payment_status')->nullable();
+                $table->decimal('amount', 16)->nullable();
+                $table->decimal('instructor_amount', 16)->nullable();
+                $table->decimal('admin_amount', 16)->nullable();
 
-            $table->decimal('instructor_share', 16)->nullable();
-            $table->decimal('admin_share', 16)->nullable();
+                $table->decimal('instructor_share', 16)->nullable();
+                $table->decimal('admin_share', 16)->nullable();
 
-            $table->timestamps();
-        });
+                $table->timestamps();
+            });
+        }
     }
 
     /**

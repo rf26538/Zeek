@@ -229,7 +229,7 @@
 </div>
 @endif
 
-@if ($instructors)
+@if ($instructors && count($assignments) > 0)
 <div class="home-section-wrap home-blog-section-wrapper py-5">
     <div class="container mt-2">
         <div class="section-header-wrap">

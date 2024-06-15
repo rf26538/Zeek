@@ -13,15 +13,17 @@ class CreateWithdrawsTable extends Migration
      */
     public function up()
     {
-        Schema::create('withdraws', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id')->nullable();
-            $table->decimal('amount', 16)->nullable();
-            $table->text('method_data')->nullable();
-            $table->text('description')->nullable();
-            $table->string('status', 20)->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable("withdraws")) {
+            Schema::create('withdraws', function (Blueprint $table) {
+                $table->id();
+                $table->integer('user_id')->nullable();
+                $table->decimal('amount', 16)->nullable();
+                $table->text('method_data')->nullable();
+                $table->text('description')->nullable();
+                $table->string('status', 20)->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
